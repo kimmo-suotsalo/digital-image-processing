@@ -1,0 +1,37 @@
+--------------------------------
+KUVANKÄSITTELYN HARJOITUSOHJELMA
+--------------------------------
+
+AIHE
+
+Toteutetaan ohjelma digitaalisen kuvankäsittelyn harjoittelua varten. Käyttäjä voi tutkia erilaisten
+suodattimien toimintaa konvoluutiossa, suunnitella omia suodattimia ja kokeilla muita toimintoja,
+kuten korrelaatio ja kynnystys. Käsiteltävä kuva ladataan käyttäjän määrittelemästä tiedostosta.
+Valmis kuva voidaan myös tallentaa tiedostoon.
+
+Ohjelmaa käytetään graafisen käyttöliittymän avulla. Valmiiden kuvankäsittelymetodien sijaan
+käytetään itse toteutettuja metodeja, jotta käyttäjän on mahdollista ymmärtää kuvankäsittelyn
+periaatteita lähdekoodin avulla.
+
+KÄYTTÄJÄT
+
+- opiskelijat
+
+YDINTOIMINNOT
+
+- kuvan lataaminen tiedostosta
+- digitaalinen suodatus
+    - valmiin suodattimen valinta
+    - konvoluution laskeminen
+- kuvan tallentaminen tiedostoon
+
+LISÄTOIMINNOT
+
+- digitaalinen suodatus
+    - oman suodattimen määrittely
+- korrelaatio
+    - kohdekuvan määrittely
+    - korrelaation laskeminen
+- kynnystys
+    - kynnysarvojen määrittely
+    - kynnystyksen laskeminen
