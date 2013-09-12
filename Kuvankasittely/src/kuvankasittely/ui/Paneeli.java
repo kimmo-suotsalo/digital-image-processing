@@ -14,7 +14,7 @@ public class Paneeli extends JPanel {
 
     @Override
     protected void paintComponent(Graphics graphics) { 
-         super.paintComponent(graphics); // ilman tätä super.setBackground(Color.WHITE) ei toimi ?
+         super.paintComponent(graphics);
          graphics.drawImage(kuva, 0, 0, null);
     }
  
