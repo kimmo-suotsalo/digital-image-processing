@@ -1,0 +1,12 @@
+---------------
+TUNTIKIRJANPITO
+---------------
+
+PVM      AIKA     AJANKÄYTÖN KOHDE
+-----------------------------------------------------------------------------
+30.08.   1 h      Aihemäärittelyn laatiminen
+04.09.   4 h      Gitin ja GitHubin käytön harjoittelu ja 1. tehtävän aloitus
+05.09.   1 h      1. tehtävän viimeistely
+10.09.   2 h      2. tehtävän aloitus
+11.09.   3 h      Ohjelmointia ja luokkakaavion luonnostelua
+12.09.   7 h      Ohjelmointia ja testausta
