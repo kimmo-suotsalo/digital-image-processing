@@ -20,6 +20,7 @@ KÄYTTÄJÄT
 YDINTOIMINNOT
 
 - kuvan lataaminen tiedostosta
+- kirkkauden säätö
 - digitaalinen suodatus
     - valmiin suodattimen valinta
     - konvoluution laskeminen

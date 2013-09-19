@@ -3,10 +3,11 @@ package kuvankasittely.ui;
 import java.awt.*;
 import java.awt.image.*;
 import javax.swing.*;
+import kuvankasittely.domain.*;
 
 public class Paneeli extends JPanel {
     
-    BufferedImage kuva;
+    BufferedImage puskuroituKuva;
     
     public Paneeli() {
         super.setBackground(Color.WHITE);
@@ -15,15 +16,15 @@ public class Paneeli extends JPanel {
     @Override
     protected void paintComponent(Graphics graphics) { 
          super.paintComponent(graphics);
-         graphics.drawImage(kuva, 0, 0, null);
+         graphics.drawImage(puskuroituKuva, 0, 0, null);
     }
  
-    public void asetaKuva(BufferedImage kuva) {
-        this.kuva = kuva;
+    public void setKuva(Kuva kuva) {
+        this.puskuroituKuva = kuva.getPuskuroituKuva();
     }
     
     public BufferedImage getKuva() {
-        return kuva;
+        return puskuroituKuva;
     }
     
 }

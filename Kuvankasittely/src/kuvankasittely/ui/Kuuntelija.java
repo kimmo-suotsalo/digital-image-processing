@@ -21,14 +21,17 @@ public class Kuuntelija implements ActionListener {
     public void actionPerformed(ActionEvent tapahtuma) {
         if ( toiminto.equals("Lataa kuva") ) {
             logiikka.lataaKuva();
-            logiikka.piirraKuva(paneeli);
-        } else if ( toiminto.equals("Muokkaa kuvaa") ) {
-            System.out.println("Painoit nappia \"Muokkaa kuvaa\" ");
+        } else if ( toiminto.equals("Tummenna") ) {
+            logiikka.tummennaKuvaa( logiikka.getKuvat().get("alkuperainen") );
+        } else if ( toiminto.equals("Vaalenna") ) {
+            logiikka.vaalennaKuvaa( logiikka.getKuvat().get("alkuperainen") );
         } else if ( toiminto.equals("Tallenna kuva") ) {
             logiikka.tallennaKuva();
+            return;
         } else if ( toiminto.equals("Lopeta") ) {
             System.exit(0);
         }
+        logiikka.piirraKuva(paneeli);        
     }
     
     public String getToiminto() {

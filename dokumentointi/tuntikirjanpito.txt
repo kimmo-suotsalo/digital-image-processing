@@ -10,3 +10,6 @@ PVM      AIKA     AJANKÄYTÖN KOHDE
 10.09.   2 h      2. tehtävän aloitus
 11.09.   3 h      Ohjelmointia ja luokkakaavion luonnostelua
 12.09.   7 h      Ohjelmointia ja testausta
+17.09.   2 h      3. tehtävän aloitus
+18.09.   5 h      Ohjelmointia ja testausta
+19.09.   2 h      Testausta ja luokkakaavion tarkentamista

@@ -38,8 +38,8 @@ public class Kayttoliittyma implements Runnable {
     }
     
     private void teeAlustukset(JFrame ikkuna) {
-        ikkuna.setLocation(600, 300);
-        ikkuna.setPreferredSize( new Dimension(1100, 500) );
+        ikkuna.setLocation(400, 300);
+        ikkuna.setPreferredSize( new Dimension(1300, 620) );
         ikkuna.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
     
@@ -50,9 +50,10 @@ public class Kayttoliittyma implements Runnable {
     }
     
     private void lisaaPainikkeet(JFrame ikkuna) {
-        ArrayList<JButton> painikkeet = new ArrayList<JButton>();
+        ArrayList<JButton> painikkeet = new ArrayList<>();
         painikkeet.add( new JButton("Lataa kuva") );
-        painikkeet.add( new JButton("Muokkaa kuvaa") );
+        painikkeet.add( new JButton("Tummenna") );
+        painikkeet.add( new JButton("Vaalenna") );
         painikkeet.add( new JButton("Tallenna kuva") );
         painikkeet.add( new JButton("Lopeta") );
         for (JButton painike : painikkeet) {
