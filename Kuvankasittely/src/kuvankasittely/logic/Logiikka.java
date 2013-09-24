@@ -6,6 +6,12 @@ import javax.imageio.*;
 import kuvankasittely.domain.*;
 import kuvankasittely.ui.*;
 
+/**
+ * @author      kimpe
+ * @version     4.0
+ * @since       2013-09-24
+ */
+
 public class Logiikka {
     
     private HashMap<String,File> tiedostot;

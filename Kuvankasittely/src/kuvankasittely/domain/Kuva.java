@@ -2,6 +2,12 @@ package kuvankasittely.domain;
 
 import java.awt.image.*;
 
+/**
+ * @author      kimpe
+ * @version     4.0
+ * @since       2013-09-24
+ */
+
 public class Kuva {
     
     private BufferedImage puskuroituKuva;
@@ -32,6 +38,16 @@ public class Kuva {
         return rasteri;
     }    
     
+    /** Palauttaa RGB-kanavan.
+     * <p>
+     * Metodi määrittelee matriisin, jonka rivien määrä vastaa kuvan korkeutta ja sarakkeiden
+     * määrä kuvan leveyttä. Matriisin alkiot ovat kokonaislukuja väliltä [0, 255], ja ne
+     * saadaan kuvarasterin pikselin arvoista valitulla kanavalla. 
+     * 
+     * @param kanava RGB-kanavan tunnus: 0-punainen, 1-vihreä, 2-sininen.
+     * @return Parametrin yksilöimä kanava matriisimuodossa.
+     */
+    
     public Matriisi getKanava(int kanava) {
         if ( kanava >= getKanavienMaara() ) return null;
         Matriisi matriisi = new Matriisi( getKuvanKorkeus(), getKuvanLeveys() );
@@ -42,6 +58,14 @@ public class Kuva {
         }
         return matriisi;
     }
+    
+    /** Asettaa RGB-kanavan.
+     * <p>
+     * Metodi asettaa matriisin alkiot kuvarasterin pikselin arvoiksi valitulla RGB-kanavalla.
+     * 
+     * @param kanava RGB-kanavan tunnus: 0-punainen, 1-vihreä, 2-sininen.
+     * @param matriisi Matriisi, jonka alkiot ovat kokonaislukuja väliltä [0, 255].
+     */
     
     public void setKanava(int kanava, Matriisi matriisi) {
         if ( kanava >= getKanavienMaara() ) return;
@@ -59,6 +83,16 @@ public class Kuva {
             }
         }
     }
+    
+    /** Konvoloi kuvan valitulla suotimella.
+     * <p>
+     * Metodi määrittelee kohdematriisin, jonka alkiot saadaan kuvarasterin pikselin arvoista
+     * valitulla kanavalla. Kohdematriisin ja suotimen välinen konvoluutio lasketaan Matriisi-luokan
+     * metodilla {@see konvoloi}, mutta suodinmatriisin kierto tehdään jo tässä metodissa.
+     * 
+     * @param suodin Suodinmatriisi.
+     * @see Matriisi
+     */
     
     public void konvoloi(Matriisi suodin) {
         for (int kanava = 0; kanava < this.getKanavienMaara(); kanava++) {

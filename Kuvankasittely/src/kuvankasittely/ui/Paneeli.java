@@ -5,6 +5,12 @@ import java.awt.image.*;
 import javax.swing.*;
 import kuvankasittely.domain.*;
 
+/**
+ * @author      kimpe
+ * @version     4.0
+ * @since       2013-09-24
+ */
+
 public class Paneeli extends JPanel {
     
     BufferedImage puskuroituKuva;

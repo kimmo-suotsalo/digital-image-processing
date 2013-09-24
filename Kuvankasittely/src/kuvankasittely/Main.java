@@ -1,8 +1,14 @@
 package kuvankasittely;
 
-import kuvankasittely.logic.*;
 import javax.swing.*;
+import kuvankasittely.logic.*;
 import kuvankasittely.ui.*;
+
+/**
+ * @author      kimpe
+ * @version     4.0
+ * @since       2013-09-24
+ */
 
 public class Main {
 

@@ -1,10 +1,19 @@
 package kuvankasittely.domain;
 
+/**
+ * @author      kimpe
+ * @version     4.0
+ * @since       2013-09-24
+ */
+
 public class Matriisi {
     
     private int rivienMaara;
     private int sarakkeidenMaara;
     private int[][] alkiot;
+    
+    /** Luo uuden matriisin, jonka rivien ja sarakkeiden määrä annetaan parametreina.
+     */
     
     public Matriisi(int rivienMaara, int sarakkeidenMaara) {
         if (rivienMaara > 0 && sarakkeidenMaara > 0) {
@@ -14,6 +23,9 @@ public class Matriisi {
         }
     }
     
+    /** Luo uuden matriisin, jonka sisältö kopioidaan parametrina annetusta matriisista.
+     */
+    
     public Matriisi(Matriisi alkuperainen) {
         this( alkuperainen.getRivienMaara(), alkuperainen.getSarakkeidenMaara() );
         for (int rivi = 0; rivi < rivienMaara; rivi++) {
@@ -22,6 +34,17 @@ public class Matriisi {
             }
         }
     }
+    
+    /** Asettaa arvon matriisin alkiolle.
+     * <p>
+     * 
+     * @param rivi Matriisin rivi, jolla käsiteltävä alkio sijaitsee.
+     * @param sarake Matriisin sarake, jolla käsiteltävä alkio sijaitsee.
+     * @param arvo Alkiolle asetettava arvo, jonka tulee olla kokonaisluku väliltä [0, 255]. Jos arvo on liian pieni,
+     * asetetaan alkioksi nolla. Jos arvo on liian suuri, asetetaan alkioksi 255.
+     * @return {@see True}, jos annettu rivi ja sarake löytyvät matriisista. {@see False}, jos rivi tai sarake 
+     * viittaa virheelliseen indeksiin. 
+     */
     
     public boolean setAlkio(int rivi, int sarake, int arvo) {
         try {

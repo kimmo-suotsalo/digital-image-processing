@@ -1,9 +1,14 @@
 package kuvankasittely.ui;
 
 import java.awt.*;
-import java.util.*;
 import javax.swing.*;
 import kuvankasittely.logic.*;
+
+/**
+ * @author      kimpe
+ * @version     4.0
+ * @since       2013-09-24
+ */
 
 public class Kayttoliittyma implements Runnable {
 
