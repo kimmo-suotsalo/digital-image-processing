@@ -19,9 +19,9 @@ public class Kayttoliittyma implements Runnable {
     
     @Override
     public void run() {
-        teeAlustukset(paaikkuna);
-        asettele(paaikkuna);
-        lisaaPainikkeet(paaikkuna);
+        asettele( paaikkuna, 700, 200, 750, 640, new BorderLayout() );
+        lisaaPaneeli(paaikkuna);
+        lisaaPainikerivi(paaikkuna);        
         nayta(paaikkuna);
     }
     
@@ -37,28 +37,38 @@ public class Kayttoliittyma implements Runnable {
         return paneeli;
     }
     
-    private void teeAlustukset(JFrame ikkuna) {
-        ikkuna.setLocation(400, 300);
-        ikkuna.setPreferredSize( new Dimension(1300, 620) );
-        ikkuna.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    private void asettele(JFrame ikkuna, int xSijainti, int ySijainti, int leveys, int korkeus, LayoutManager layout) {
+        ikkuna.setLocation(xSijainti, ySijainti);
+        ikkuna.setPreferredSize( new Dimension(leveys, korkeus) );
+        ikkuna.setLayout(layout);
+        ikkuna.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);        
     }
     
-    private void asettele(JFrame ikkuna) {
+    private void lisaaPaneeli(JFrame ikkuna) {
         Container ikkunanSisalto = ikkuna.getContentPane();
-        ikkunanSisalto.setLayout( new BoxLayout(ikkunanSisalto, BoxLayout.X_AXIS) );
-        ikkunanSisalto.add(paneeli);
+        ikkunanSisalto.add(paneeli, BorderLayout.CENTER);
     }
     
-    private void lisaaPainikkeet(JFrame ikkuna) {
-        ArrayList<JButton> painikkeet = new ArrayList<>();
-        painikkeet.add( new JButton("Lataa kuva") );
-        painikkeet.add( new JButton("Tummenna") );
-        painikkeet.add( new JButton("Vaalenna") );
-        painikkeet.add( new JButton("Tallenna kuva") );
-        painikkeet.add( new JButton("Lopeta") );
-        for (JButton painike : painikkeet) {
+    private void lisaaPainikerivi(JFrame ikkuna) {
+        JPanel painikerivi = new JPanel( new FlowLayout() );
+        lisaaPainikkeet(painikerivi);
+        lisaaKuuntelijat(painikerivi);
+        ikkuna.getContentPane().add(painikerivi, BorderLayout.SOUTH);
+    }
+    
+    private void lisaaPainikkeet(JPanel painikerivi) {
+        painikerivi.add( new JButton("Lataa kuva") );
+        painikerivi.add( new JButton("Tummenna") );
+        painikerivi.add( new JButton("Vaalenna") );
+        painikerivi.add( new JButton("Suodata") );
+        painikerivi.add( new JButton("Tallenna kuva") );
+        painikerivi.add( new JButton("Lopeta") );
+    }
+    
+    private void lisaaKuuntelijat(JPanel painikerivi) {
+        for ( Component komponentti : painikerivi.getComponents() ) {
+            JButton painike = (JButton) komponentti;
             painike.addActionListener( new Kuuntelija(painike, logiikka, paneeli) );
-            ikkuna.getContentPane().add(painike);
         }
     }
     

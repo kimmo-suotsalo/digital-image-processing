@@ -60,5 +60,13 @@ public class Kuva {
         }
     }
     
+    public void konvoloi(Matriisi suodin) {
+        for (int kanava = 0; kanava < this.getKanavienMaara(); kanava++) {
+            Matriisi kohde = this.getKanava(kanava);
+            suodin.kierra180Astetta();
+            kohde.konvoloi(suodin);
+            this.setKanava(kanava, kohde);
+        }
+    }
     
 }

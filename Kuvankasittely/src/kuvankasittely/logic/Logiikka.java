@@ -12,8 +12,8 @@ public class Logiikka {
     private HashMap<String,Kuva> kuvat;
     
     public Logiikka() {
-        this.tiedostot = new HashMap<>();
-        this.kuvat = new HashMap<>();
+        this.tiedostot = new HashMap<String,File>();
+        this.kuvat = new HashMap<String,Kuva>();
     }
     
     public boolean lataaKuva() {
@@ -40,6 +40,15 @@ public class Logiikka {
     public void vaalennaKuvaa(Kuva kuva) {
         if (kuva == null) return;
         saadaKuvanKirkkautta(kuva, 1.1);
+    }
+    
+    public void suodataKuva(Kuva kuva) {
+        if (kuva == null) return;
+        int suotimenRivienMaara = 5;
+        int suotimenSarakkeidenMaara = 5;
+        Matriisi suodin = new Matriisi(suotimenRivienMaara, suotimenSarakkeidenMaara);        
+        suodin.setAlkiot( 255 / (suotimenRivienMaara * suotimenSarakkeidenMaara) );
+        kuva.konvoloi(suodin);
     }
     
     public boolean tallennaKuva() {

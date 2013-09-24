@@ -94,5 +94,26 @@ public class Matriisi {
         kaannaVasenOikea();
         kaannaYlosAlas();
     }
+      
+    public void konvoloi(Matriisi suodin) {        
+        for (int pikselinRivi = 0; pikselinRivi < this.rivienMaara; pikselinRivi++) {                            
+            for (int pikselinSarake = 0; pikselinSarake < this.sarakkeidenMaara; pikselinSarake++) {     
+                double pikselinArvo = laskeKonvoluutiosumma(pikselinRivi, pikselinSarake, suodin);
+                this.setAlkio(pikselinRivi, pikselinSarake, (int) pikselinArvo);
+            }                        
+        }
+    }
+    
+    private double laskeKonvoluutiosumma(int pikselinRivi, int pikselinSarake, Matriisi suodin) {
+        int suotimenSade = ( suodin.getRivienMaara() - 1 ) / 2; 
+        double summa = 0.0;         
+        for (int suotimenRivi = -suotimenSade; suotimenRivi <= suotimenSade; suotimenRivi++) {
+            for (int suotimenSarake = -suotimenSade; suotimenSarake <= suotimenSade; suotimenSarake++) {
+                double alkionArvo = (double) this.getAlkio(pikselinRivi + suotimenRivi, pikselinSarake + suotimenSarake);
+                summa += alkionArvo * ( (double) suodin.getAlkio(suotimenSarake + suotimenSade, suotimenRivi + suotimenSade) / 255.0);
+            }                    
+        }
+        return summa;
+    }
     
 }
