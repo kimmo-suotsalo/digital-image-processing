@@ -7,8 +7,8 @@ import kuvankasittely.domain.*;
 
 /**
  * @author      kimpe
- * @version     4.0
- * @since       2013-09-24
+ * @version     4.1
+ * @since       2013-09-26
  */
 
 public class Paneeli extends JPanel {

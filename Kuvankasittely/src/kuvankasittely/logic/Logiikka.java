@@ -8,8 +8,8 @@ import kuvankasittely.ui.*;
 
 /**
  * @author      kimpe
- * @version     4.0
- * @since       2013-09-24
+ * @version     4.1
+ * @since       2013-09-26
  */
 
 public class Logiikka {
@@ -21,9 +21,14 @@ public class Logiikka {
         this.tiedostot = new HashMap<String,File>();
         this.kuvat = new HashMap<String,Kuva>();
     }
+
+    /** Lataa kuvan tiedostosta.
+     * 
+     * @return True, jos tiedoston avaaminen ja kuvan lataaminen onnistuvat, muutoin False.
+     */
     
     public boolean lataaKuva() {
-        tiedostot.put("lukutiedosto", new File("../dokumentointi/luokkakaavio.PNG") );
+        tiedostot.put("lukutiedosto", new File("./dokumentointi/luokkakaavio.PNG") );
         try {
             kuvat.put("alkuperainen", new Kuva( ImageIO.read( tiedostot.get("lukutiedosto") ) ) );
             return true;
@@ -32,34 +37,61 @@ public class Logiikka {
         }
     }
     
+    /** Piirtää kuvan käyttäjän tarkasteltavaksi.
+     * 
+     * @param paneeli Paneeli, johon kuva piirretään.
+     */
+    
     public void piirraKuva(Paneeli paneeli) {
         if ( kuvat.get("alkuperainen") == null ) return;
         paneeli.setKuva( kuvat.get("alkuperainen") );
         paneeli.repaint();
     }
 
+    /** Tummentaa kuvaa 10 prosenttia.
+     * 
+     * @param kuva Tummennettava kuva.
+     */
+    
     public void tummennaKuvaa(Kuva kuva) {
         if (kuva == null) return;
         saadaKuvanKirkkautta(kuva, 0.9);
     }
+    
+    /** Vaalentaa kuvaa 10 prosenttia.
+     * 
+     * @param kuva Vaalennettava kuva.
+     */
     
     public void vaalennaKuvaa(Kuva kuva) {
         if (kuva == null) return;
         saadaKuvanKirkkautta(kuva, 1.1);
     }
     
+    /** Suodattaa kuvan erikseen määriteltävällä suotimella.
+     * <p>
+     * Suodatus tapahtuu konvoluution avulla. 
+     * 
+     * @param kuva Suodatettava kuva.
+     */
+    
     public void suodataKuva(Kuva kuva) {
         if (kuva == null) return;
-        int suotimenRivienMaara = 5;
-        int suotimenSarakkeidenMaara = 5;
+        int suotimenRivienMaara = 3;
+        int suotimenSarakkeidenMaara = 3;
         Matriisi suodin = new Matriisi(suotimenRivienMaara, suotimenSarakkeidenMaara);        
-        suodin.setAlkiot( 255 / (suotimenRivienMaara * suotimenSarakkeidenMaara) );
+        suodin.setAlkiot( 1.0 / (suotimenRivienMaara * suotimenSarakkeidenMaara) );
         kuva.konvoloi(suodin);
     }
     
+    /** Tallentaa kuvan tiedostoon.
+     * 
+     * @return True, jos tiedoston avaaminen ja kuvan tallentaminen onnistuvat, muutoin False.
+     */
+    
     public boolean tallennaKuva() {
         if (kuvat.get("alkuperainen") == null) return false;
-        tiedostot.put("kirjoitustiedosto", new File("../../muokattuKuva.png") );        
+        tiedostot.put("kirjoitustiedosto", new File("../muokattuKuva.PNG") );        
         try {
             tiedostot.get("kirjoitustiedosto").createNewFile();
             ImageIO.write(kuvat.get("alkuperainen").getPuskuroituKuva(), "PNG",

@@ -6,8 +6,8 @@ import kuvankasittely.logic.*;
 
 /**
  * @author      kimpe
- * @version     4.0
- * @since       2013-09-24
+ * @version     4.1
+ * @since       2013-09-26
  */
 
 public class Kayttoliittyma implements Runnable {
@@ -21,10 +21,10 @@ public class Kayttoliittyma implements Runnable {
         this.logiikka = logiikka;
         this.paneeli = new Paneeli();
     }
-    
+
     @Override
     public void run() {
-        asettele( paaikkuna, 700, 200, 750, 640, new BorderLayout() );
+        asettele( paaikkuna, 700, 200, 760, 657, new BorderLayout() );
         lisaaPaneeli(paaikkuna);
         lisaaPainikerivi(paaikkuna);        
         nayta(paaikkuna);

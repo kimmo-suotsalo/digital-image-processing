@@ -4,8 +4,8 @@ import java.awt.image.*;
 
 /**
  * @author      kimpe
- * @version     4.0
- * @since       2013-09-24
+ * @version     4.1
+ * @since       2013-09-26
  */
 
 public class Kuva {
@@ -41,8 +41,11 @@ public class Kuva {
     /** Palauttaa RGB-kanavan.
      * <p>
      * Metodi määrittelee matriisin, jonka rivien määrä vastaa kuvan korkeutta ja sarakkeiden
-     * määrä kuvan leveyttä. Matriisin alkiot ovat kokonaislukuja väliltä [0, 255], ja ne
-     * saadaan kuvarasterin pikselin arvoista valitulla kanavalla. 
+     * määrä kuvan leveyttä. Matriisin alkiot saadaan kuvarasterin pikselin arvoista valitulla
+     * kanavalla.
+     * <p>
+     * Kuvarasterin pikselin arvot ovat kokonaislukuja väliltä [0, 255]. Matriisiin ne talletetaan
+     * kaksoistarkkuuden liukulukuina.
      * 
      * @param kanava RGB-kanavan tunnus: 0-punainen, 1-vihreä, 2-sininen.
      * @return Parametrin yksilöimä kanava matriisimuodossa.
@@ -52,8 +55,8 @@ public class Kuva {
         if ( kanava >= getKanavienMaara() ) return null;
         Matriisi matriisi = new Matriisi( getKuvanKorkeus(), getKuvanLeveys() );
         for (int rivi = 0; rivi < getKuvanKorkeus(); rivi++) {
-            for (int sarake = 0; sarake < getKuvanLeveys(); sarake++) {
-                matriisi.setAlkio(rivi, sarake, rasteri.getPixel(sarake, rivi, new int[getKanavienMaara()])[kanava] );
+            for (int sarake = 0; sarake < getKuvanLeveys(); sarake++) {                
+                matriisi.setAlkio(rivi, sarake, (double) rasteri.getPixel(sarake, rivi, new int[getKanavienMaara()])[kanava] );
             }
         }
         return matriisi;
@@ -62,9 +65,14 @@ public class Kuva {
     /** Asettaa RGB-kanavan.
      * <p>
      * Metodi asettaa matriisin alkiot kuvarasterin pikselin arvoiksi valitulla RGB-kanavalla.
+     * <p>
+     * Matriisin alkiot ovat kaksoistarkkuuden liukulukuja, mutta kuvarasterin pikseleihin ne talletetaan
+     * kokonaislukuina. Muunnoksen yhteydessä liukuluvun arvo pyöristetään lähimpään kokonaislukuun. Jos
+     * saatu luku on negatiivinen, asetetaan pikselin arvoksi 0. Jos luku on suurempi kuin 255, asetetaan
+     * pikselin arvoksi 255.
      * 
      * @param kanava RGB-kanavan tunnus: 0-punainen, 1-vihreä, 2-sininen.
-     * @param matriisi Matriisi, jonka alkiot ovat kokonaislukuja väliltä [0, 255].
+     * @param matriisi Pikselin arvot sisältävä matriisi.
      */
     
     public void setKanava(int kanava, Matriisi matriisi) {
@@ -74,7 +82,7 @@ public class Kuva {
             for (int sarake = 0; sarake < getKuvanLeveys(); sarake++) {
                 for (int indeksi = 0; indeksi < getKanavienMaara(); indeksi++) {
                     if ( indeksi == kanava) {
-                        kerrokset[indeksi] = matriisi.getAlkio(rivi, sarake);
+                        kerrokset[indeksi] = muunnaPikselinArvoksi( matriisi.getAlkio(rivi, sarake) );
                     } else {
                         kerrokset[indeksi] = rasteri.getPixel(sarake, rivi, new int[3])[indeksi];
                     }
@@ -88,19 +96,25 @@ public class Kuva {
      * <p>
      * Metodi määrittelee kohdematriisin, jonka alkiot saadaan kuvarasterin pikselin arvoista
      * valitulla kanavalla. Kohdematriisin ja suotimen välinen konvoluutio lasketaan Matriisi-luokan
-     * metodilla {@see konvoloi}, mutta suodinmatriisin kierto tehdään jo tässä metodissa.
+     * metodilla konvoloi, mutta suodinmatriisin kierto tehdään jo tässä metodissa.
      * 
      * @param suodin Suodinmatriisi.
      * @see Matriisi
      */
     
     public void konvoloi(Matriisi suodin) {
-        for (int kanava = 0; kanava < this.getKanavienMaara(); kanava++) {
-            Matriisi kohde = this.getKanava(kanava);
+        for (int kanava = 0; kanava < this.getKanavienMaara(); kanava++) {            
             suodin.kierra180Astetta();
-            kohde.konvoloi(suodin);
+            Matriisi kohde = this.getKanava(kanava).konvoloi(suodin);
             this.setKanava(kanava, kohde);
         }
+    }
+    
+    private int muunnaPikselinArvoksi(double matriisinAlkio) {
+        int pikselinArvo = Math.round( (float) matriisinAlkio );
+        if (pikselinArvo < 0) pikselinArvo = 0;
+        if (pikselinArvo > 255) pikselinArvo = 255;
+        return pikselinArvo;
     }
     
 }
