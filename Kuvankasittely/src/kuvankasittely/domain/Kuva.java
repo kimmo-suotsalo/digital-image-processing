@@ -4,18 +4,24 @@ import java.awt.image.*;
 
 /**
  * @author      kimpe
- * @version     4.1
- * @since       2013-09-26
+ * @version     5.0
+ * @since       2013-10-03
  */
 
 public class Kuva {
     
     private BufferedImage puskuroituKuva;
-    private WritableRaster rasteri;    
+    private WritableRaster rasteri;
     
     public Kuva(BufferedImage puskuroituKuva){
         this.puskuroituKuva = puskuroituKuva;
         this.rasteri = puskuroituKuva.getRaster();
+    }
+    
+    public Kuva(Kuva alkuperainen){
+        rasteri = alkuperainen.getRasteri().createCompatibleWritableRaster();
+        rasteri.setRect( alkuperainen.getRasteri() );
+        puskuroituKuva = new BufferedImage( alkuperainen.getPuskuroituKuva().getColorModel(), rasteri, true, null); 
     }
     
     public int getKanavienMaara() {
@@ -30,13 +36,13 @@ public class Kuva {
         return rasteri.getHeight();
     }
     
-    public BufferedImage getPuskuroituKuva() {
-        return puskuroituKuva;
-    }
-    
     public WritableRaster getRasteri() {
         return rasteri;
     }    
+    
+    public BufferedImage getPuskuroituKuva() {
+        return puskuroituKuva;
+    }
     
     /** Palauttaa RGB-kanavan.
      * <p>
@@ -52,14 +58,16 @@ public class Kuva {
      */
     
     public Matriisi getKanava(int kanava) {
-        if ( kanava >= getKanavienMaara() ) return null;
-        Matriisi matriisi = new Matriisi( getKuvanKorkeus(), getKuvanLeveys() );
-        for (int rivi = 0; rivi < getKuvanKorkeus(); rivi++) {
-            for (int sarake = 0; sarake < getKuvanLeveys(); sarake++) {                
-                matriisi.setAlkio(rivi, sarake, (double) rasteri.getPixel(sarake, rivi, new int[getKanavienMaara()])[kanava] );
+        if ( kanava < getKanavienMaara() ) {
+            Matriisi matriisi = new Matriisi( getKuvanKorkeus(), getKuvanLeveys() );
+            for (int rivi = 0; rivi < getKuvanKorkeus(); rivi++) {
+                for (int sarake = 0; sarake < getKuvanLeveys(); sarake++) {                
+                    matriisi.setAlkio(rivi, sarake, (double) rasteri.getPixel(sarake, rivi, new int[getKanavienMaara()])[kanava] );
+                }
             }
+            return matriisi;
         }
-        return matriisi;
+        return null;
     }
     
     /** Asettaa RGB-kanavan.
@@ -76,18 +84,19 @@ public class Kuva {
      */
     
     public void setKanava(int kanava, Matriisi matriisi) {
-        if ( kanava >= getKanavienMaara() ) return;
-        int[] kerrokset = new int[getKanavienMaara()];
-        for (int rivi = 0; rivi < getKuvanKorkeus(); rivi++) {
-            for (int sarake = 0; sarake < getKuvanLeveys(); sarake++) {
-                for (int indeksi = 0; indeksi < getKanavienMaara(); indeksi++) {
-                    if ( indeksi == kanava) {
-                        kerrokset[indeksi] = muunnaPikselinArvoksi( matriisi.getAlkio(rivi, sarake) );
-                    } else {
-                        kerrokset[indeksi] = rasteri.getPixel(sarake, rivi, new int[3])[indeksi];
+        if ( kanava < getKanavienMaara() ) {
+            int[] kerrokset = new int[getKanavienMaara()];
+            for (int rivi = 0; rivi < getKuvanKorkeus(); rivi++) {
+                for (int sarake = 0; sarake < getKuvanLeveys(); sarake++) {
+                    for (int indeksi = 0; indeksi < getKanavienMaara(); indeksi++) {
+                        if ( indeksi == kanava) {
+                            kerrokset[indeksi] = muunnaPikselinArvoksi( matriisi.getAlkio(rivi, sarake) );
+                        } else {
+                            kerrokset[indeksi] = rasteri.getPixel(sarake, rivi, new int[3])[indeksi];
+                        }
                     }
+                    rasteri.setPixel(sarake, rivi, kerrokset);
                 }
-                rasteri.setPixel(sarake, rivi, kerrokset);
             }
         }
     }

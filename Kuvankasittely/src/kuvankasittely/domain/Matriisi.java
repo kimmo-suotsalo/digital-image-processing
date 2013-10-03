@@ -2,8 +2,8 @@ package kuvankasittely.domain;
 
 /**
  * @author      kimpe
- * @version     4.1
- * @since       2013-09-26
+ * @version     5.0
+ * @since       2013-10-03
  */
 
 public class Matriisi {
@@ -44,12 +44,11 @@ public class Matriisi {
      * viittaa virheelliseen indeksiin. 
      */
     
-    public boolean setAlkio(int rivi, int sarake, double arvo) {
+    public void setAlkio(int rivi, int sarake, double arvo) {
         try {
             alkiot[rivi][sarake] = arvo;
-            return true;
         } catch (IndexOutOfBoundsException poikkeus) {
-            return false;
+            return;
         }
     }
     
@@ -60,15 +59,12 @@ public class Matriisi {
      * viittaa virheelliseen indeksiin.
      */
     
-    public boolean setAlkiot(double arvo) {
+    public void setAlkiot(double arvo) {
         for (int rivi = 0; rivi < rivienMaara; rivi++) {
             for (int sarake = 0; sarake < sarakkeidenMaara; sarake++) {
-                if ( !setAlkio(rivi, sarake, arvo) ) {
-                    return false;
-                }
+                setAlkio(rivi, sarake, arvo);
             }
         }
-        return true;
     }
     
     /** Palauttaa matriisin alkion arvon.
@@ -80,7 +76,6 @@ public class Matriisi {
      */
     
     public double getAlkio(int rivi, int sarake) {
-        double alkio;
         try {
             return alkiot[rivi][sarake];
         } catch (IndexOutOfBoundsException poikkeus) {
@@ -99,6 +94,25 @@ public class Matriisi {
     public int getSarakkeidenMaara() {
         return sarakkeidenMaara;
     }
+    
+    public void kerro(double vakio) {
+        for (int rivi = 0; rivi < this.getRivienMaara(); rivi++) {
+             for (int sarake = 0; sarake < this.getSarakkeidenMaara(); sarake++) {
+                setAlkio(rivi, sarake, vakio * getAlkio(rivi, sarake) );
+             }
+        }
+    }
+    
+    public void lisaa(Matriisi matriisi) {
+        if ( this.getRivienMaara() == matriisi.getRivienMaara() &&
+             this.getSarakkeidenMaara() == matriisi.getSarakkeidenMaara() ) {
+            for (int rivi = 0; rivi < this.getRivienMaara(); rivi++) {
+                for (int sarake = 0; sarake < this.getSarakkeidenMaara(); sarake++) {
+                    this.setAlkio(rivi, sarake, this.getAlkio(rivi, sarake) + matriisi.getAlkio(rivi, sarake) );
+                }    
+            }
+        }
+    }        
     
     /** Kääntää matriisin pystyakselinsa ympäri.
      * <p>

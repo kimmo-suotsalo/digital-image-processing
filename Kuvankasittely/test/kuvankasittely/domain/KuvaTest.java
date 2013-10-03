@@ -1,8 +1,15 @@
 package kuvankasittely.domain;
 
+import java.io.File;
 import kuvankasittely.logic.*;
 import static org.junit.Assert.*;
 import org.junit.Test;
+
+/**
+ * @author      kimpe
+ * @version     5.0
+ * @since       2013-10-03
+ */
 
 public class KuvaTest {
     
@@ -13,7 +20,7 @@ public class KuvaTest {
     
     public KuvaTest() {
         logiikka = new Logiikka();
-        logiikka.lataaKuva();
+        logiikka.lataaKuva( new File("../dokumentointi/luokkakaavio.PNG") );
         kuva = new Kuva( logiikka.getKuvat().get("alkuperainen").getPuskuroituKuva() );
         matriisi = new Matriisi( kuva.getKuvanKorkeus(), kuva.getKuvanLeveys() );
         tarkkuus = Math.pow(10.0, -4.0);

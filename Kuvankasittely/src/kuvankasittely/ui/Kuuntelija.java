@@ -6,57 +6,97 @@ import kuvankasittely.logic.*;
 
 /**
  * @author      kimpe
- * @version     4.1
- * @since       2013-09-26
+ * @version     5.0
+ * @since       2013-10-03
  */
 
 public class Kuuntelija implements ActionListener {
 
-    String toiminto;
     Logiikka logiikka;
+    JButton painike;
     Paneeli paneeli;
+    Ikkuna edeltaja, seuraaja;
     
-    public Kuuntelija (JButton painike, Logiikka logiikka, Paneeli paneeli) {
+    public Kuuntelija (Logiikka logiikka, JButton painike, Paneeli paneeli, Ikkuna edeltaja, Ikkuna seuraaja) {
         super();
-        this.toiminto = painike.getActionCommand();
         this.logiikka = logiikka;
+        this.painike = painike;
         this.paneeli = paneeli;
+        this.edeltaja = edeltaja;
+        this.seuraaja = seuraaja;
+    }
+        
+    @Override
+    public void actionPerformed(ActionEvent tapahtuma) {
+        if (edeltaja == null) {
+            kasittelePaaikkunanPainike();
+        } else {
+            kasitteleSuodatusikkunanPainike();
+        }                
     }
     
-    @Override
-    public void actionPerformed(ActionEvent tapahtuma) {        
-        switch (toiminto) {
-            case "Lataa kuva":                
-                logiikka.lataaKuva();
+    private void kasittelePaaikkunanPainike() {
+        switch ( painike.getActionCommand() ) {
+            case "Lataa kuva":
+                this.lataaKuva();
                 break;
             case "Tummenna":
-                logiikka.tummennaKuvaa( logiikka.getKuvat().get("alkuperainen") );
+                logiikka.tummennaKuvaa( logiikka.getKuvat().get("muokattu") );
                 break;
             case "Vaalenna":
-                logiikka.vaalennaKuvaa( logiikka.getKuvat().get("alkuperainen") );
+                logiikka.vaalennaKuvaa( logiikka.getKuvat().get("muokattu") );
                 break;
             case "Suodata":
-                logiikka.suodataKuva( logiikka.getKuvat().get("alkuperainen") );
+                if (seuraaja != null) seuraaja.nayta();                
                 break;
+            case "Palauta":
+                logiikka.palautaAlkuperainenKuva(paneeli);
+                return;
             case "Tallenna kuva":
                 logiikka.tallennaKuva();
                 return;
             case "Lopeta":
                 System.exit(0);
         }
-        logiikka.piirraKuva(paneeli);        
+        if (paneeli != null) logiikka.piirraKuva("muokattu", paneeli);   
+    }
+
+    private void lataaKuva() {
+        JFileChooser tiedostovalitsin = new JFileChooser();
+        if ( tiedostovalitsin.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+            logiikka.lataaKuva( tiedostovalitsin.getSelectedFile() );
+        }        
     }
     
-    public String getToiminto() {
-        return toiminto;
-    }
-    
-    public Logiikka getLogiikka() {
-        return logiikka;
-    }
-    
-    public Paneeli getPaneeli() {
-        return paneeli;
+    private void kasitteleSuodatusikkunanPainike() {
+        switch ( painike.getActionCommand() ) {
+            case "Nollaa":
+                logiikka.setSuodin("Nolla", 1);
+                edeltaja.getSeuraaja().paivitaSuodin( logiikka.getSuodin() );
+                break;
+            case "Deltafunktio":
+                logiikka.setSuodin("Deltafunktio", 1);                
+                edeltaja.getSeuraaja().paivitaSuodin( logiikka.getSuodin() );
+                break;
+            case "Alipäästö":
+                logiikka.setSuodin("Alipäästö", 1);
+                edeltaja.getSeuraaja().paivitaSuodin( logiikka.getSuodin() );
+                break;
+            case "Ylipäästö":
+                logiikka.setSuodin("Ylipäästö", 1);
+                edeltaja.getSeuraaja().paivitaSuodin( logiikka.getSuodin() );
+                break;
+            case "Reunanetsintä":
+                logiikka.setSuodin("Reunanetsintä", 1);
+                edeltaja.getSeuraaja().paivitaSuodin( logiikka.getSuodin() );
+                break;                
+            case "Suodata":
+                logiikka.suodataKuva( logiikka.getKuvat().get("muokattu") );
+                if (paneeli != null) logiikka.piirraKuva("muokattu", paneeli);                   
+                break;
+            case "Sulje":
+                edeltaja.getSeuraaja().piilota();
+        }
     }
     
 }

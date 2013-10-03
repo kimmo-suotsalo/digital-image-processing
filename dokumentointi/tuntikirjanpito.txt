@@ -18,3 +18,7 @@ PVM      AIKA     AJANKÄYTÖN KOHDE
 24.09.   5 h      Ohjelmointia ja JavaDocin kirjoittamista
 25.09.   3 h      Testausta ja sekvenssikaavioiden laatimista
 26.09.   5 h      Ohjelmointia, testausta ja JavaDocin kirjoittamista
+27.09.   5 h      Koodikatselmointi ja 5. tehtävän aloitus
+01.10.   3 h      Ohjelmointia ja testausta
+02.10.   8 h      Ohjelmointia ja testausta
+03.10.   6 h      Ohjelmointia ja testausta

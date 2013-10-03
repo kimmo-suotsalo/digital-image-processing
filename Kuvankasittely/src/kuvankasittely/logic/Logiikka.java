@@ -8,18 +8,20 @@ import kuvankasittely.ui.*;
 
 /**
  * @author      kimpe
- * @version     4.1
- * @since       2013-09-26
+ * @version     5.0
+ * @since       2013-10-03
  */
 
 public class Logiikka {
     
     private HashMap<String,File> tiedostot;
     private HashMap<String,Kuva> kuvat;
+    private Suodin suodin;
     
     public Logiikka() {
         this.tiedostot = new HashMap<String,File>();
         this.kuvat = new HashMap<String,Kuva>();
+        this.suodin = new Suodin("Deltafunktio", 1);
     }
 
     /** Lataa kuvan tiedostosta.
@@ -27,12 +29,13 @@ public class Logiikka {
      * @return True, jos tiedoston avaaminen ja kuvan lataaminen onnistuvat, muutoin False.
      */
     
-    public boolean lataaKuva() {
-        tiedostot.put("lukutiedosto", new File("./dokumentointi/luokkakaavio.PNG") );
+    public boolean lataaKuva(File lukutiedosto) {
+        tiedostot.put("lukutiedosto", lukutiedosto);
         try {
             kuvat.put("alkuperainen", new Kuva( ImageIO.read( tiedostot.get("lukutiedosto") ) ) );
+            kuvat.put("muokattu", new Kuva( kuvat.get("alkuperainen") ) );
             return true;
-        } catch (IOException poikkeus) {
+        } catch (Exception poikkeus) {
             return false;
         }
     }
@@ -42,10 +45,11 @@ public class Logiikka {
      * @param paneeli Paneeli, johon kuva piirretään.
      */
     
-    public void piirraKuva(Paneeli paneeli) {
-        if ( kuvat.get("alkuperainen") == null ) return;
-        paneeli.setKuva( kuvat.get("alkuperainen") );
-        paneeli.repaint();
+    public void piirraKuva(String tunnus, Paneeli paneeli) {
+        if ( kuvat.get(tunnus) != null ) {
+            paneeli.setKuva( kuvat.get(tunnus) );
+            paneeli.repaint();
+        }
     }
 
     /** Tummentaa kuvaa 10 prosenttia.
@@ -54,8 +58,9 @@ public class Logiikka {
      */
     
     public void tummennaKuvaa(Kuva kuva) {
-        if (kuva == null) return;
-        saadaKuvanKirkkautta(kuva, 0.9);
+        if (kuva != null) {
+            saadaKuvanKirkkautta(kuva, 0.9);
+        }
     }
     
     /** Vaalentaa kuvaa 10 prosenttia.
@@ -64,8 +69,9 @@ public class Logiikka {
      */
     
     public void vaalennaKuvaa(Kuva kuva) {
-        if (kuva == null) return;
-        saadaKuvanKirkkautta(kuva, 1.1);
+        if (kuva != null) {
+            saadaKuvanKirkkautta(kuva, 1.1);
+        }
     }
     
     /** Suodattaa kuvan erikseen määriteltävällä suotimella.
@@ -75,13 +81,23 @@ public class Logiikka {
      * @param kuva Suodatettava kuva.
      */
     
+    public Suodin getSuodin() {
+        return suodin;
+    }
+    
+    public void setSuodin(String tyyppi, int sade) {
+        suodin = new Suodin(tyyppi, sade);
+    }
+    
     public void suodataKuva(Kuva kuva) {
-        if (kuva == null) return;
-        int suotimenRivienMaara = 3;
-        int suotimenSarakkeidenMaara = 3;
-        Matriisi suodin = new Matriisi(suotimenRivienMaara, suotimenSarakkeidenMaara);        
-        suodin.setAlkiot( 1.0 / (suotimenRivienMaara * suotimenSarakkeidenMaara) );
-        kuva.konvoloi(suodin);
+        if (kuva != null) {
+            kuva.konvoloi( suodin.getMatriisi() );
+        }
+    }
+
+    public void palautaAlkuperainenKuva(Paneeli paneeli) {
+        kuvat.put("muokattu", new Kuva( kuvat.get("alkuperainen") ) );
+        piirraKuva("alkuperainen", paneeli);
     }
     
     /** Tallentaa kuvan tiedostoon.
@@ -90,16 +106,18 @@ public class Logiikka {
      */
     
     public boolean tallennaKuva() {
-        if (kuvat.get("alkuperainen") == null) return false;
-        tiedostot.put("kirjoitustiedosto", new File("../muokattuKuva.PNG") );        
-        try {
-            tiedostot.get("kirjoitustiedosto").createNewFile();
-            ImageIO.write(kuvat.get("alkuperainen").getPuskuroituKuva(), "PNG",
-                          tiedostot.get("kirjoitustiedosto") );
-            return true;
-        } catch (IOException poikkeus) {
-            return false;
+        if (kuvat.get("muokattu") != null) {
+            tiedostot.put("kirjoitustiedosto", new File("../../muokattuKuva.PNG") );        
+            try {
+                tiedostot.get("kirjoitustiedosto").createNewFile();
+                ImageIO.write(kuvat.get("muokattu").getPuskuroituKuva(), "PNG",
+                              tiedostot.get("kirjoitustiedosto") );
+                return true;
+            } catch (IOException poikkeus) {
+                return false;
+            }
         }
+        return false;
     }
     
     public HashMap<String,File> getTiedostot() {
