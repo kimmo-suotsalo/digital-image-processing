@@ -1,18 +1,42 @@
 package kuvankasittely.domain;
 
 /**
+ * Kuvan RGB-kanavaa tai suotimen alkioita esittävä matriisi. 
+ * <p>
+ * Matriisin alkiot talletetaan kaksoistarkkuuden liukulukuina, joille sallitaan
+ * myös negatiiviset arvot. Tämä on tarpeen pyöristysvirheiden välttämiseksi ja
+ * negatiivisia alkioita sisältävien suodintyyppien toteuttamiseksi.
+ * 
  * @author      kimpe
- * @version     5.0
- * @since       2013-10-03
+ * @version     6.0
+ * @since       2013-10-11
  */
 
 public class Matriisi {
     
+    /**
+     * Matriisin rivien lukumäärä.
+     */    
+    
     private int rivienMaara;
+    
+    /**
+     * Matriisin sarakkeiden lukumäärä.
+     */    
+    
     private int sarakkeidenMaara;
+    
+    /**
+     * Kaksiulotteinen taulukko, johon matriisin alkiot talletetaan.
+     */    
+    
     private double[][] alkiot;
     
-    /** Luo uuden matriisin, jonka rivien ja sarakkeiden määrä annetaan parametreina.
+    /**
+     * Luo uuden matriisin, jonka koko määräytyy parametrien perusteella.
+     * 
+     * @param rivienMaara Matriisin rivien lukumäärä.
+     * @param sarakkeidenMaara Matriisin sarakkeiden lukumäärä.
      */
     
     public Matriisi(int rivienMaara, int sarakkeidenMaara) {
@@ -23,7 +47,10 @@ public class Matriisi {
         }
     }
     
-    /** Luo uuden matriisin, jonka sisältö kopioidaan parametrina annetusta matriisista.
+    /**
+     * Luo uuden matriisin toisesta matriisista.
+     * 
+     * @param alkuperainen Matriisi, jonka sisältö kopioidaan uuteen matriisiin.
      */
     
     public Matriisi(Matriisi alkuperainen) {
@@ -35,13 +62,12 @@ public class Matriisi {
         }
     }
     
-    /** Asettaa arvon matriisin alkiolle.
+    /** 
+     * Asettaa arvon matriisin alkiolle.
      * 
      * @param rivi Matriisin rivi, jolla käsiteltävä alkio sijaitsee.
      * @param sarake Matriisin sarake, jolla käsiteltävä alkio sijaitsee.
      * @param arvo Alkiolle asetettava arvo, jonka tulee olla kaksoistarkkuuden liukuluku.
-     * @return True, jos annettu rivi ja sarake löytyvät matriisista. False, jos rivi tai sarake 
-     * viittaa virheelliseen indeksiin. 
      */
     
     public void setAlkio(int rivi, int sarake, double arvo) {
@@ -52,11 +78,10 @@ public class Matriisi {
         }
     }
     
-    /** Asettaa arvon matriisin kaikille alkioille.
+    /**
+     * Asettaa arvon matriisin kaikille alkioille.
      * 
      * @param arvo Alkioille asetettava arvo, jonka tulee olla kaksoistarkkuuden liukuluku.
-     * @return True, jos kaikki rivit ja sarakkeet löytyvät matriisista. False, jos jokin rivi tai sarake 
-     * viittaa virheelliseen indeksiin.
      */
     
     public void setAlkiot(double arvo) {
@@ -67,7 +92,8 @@ public class Matriisi {
         }
     }
     
-    /** Palauttaa matriisin alkion arvon.
+    /**
+     * Palauttaa matriisin alkion arvon.
      * 
      * @param rivi Matriisin rivi, jolla haluttu alkio sijaitsee.
      * @param sarake Matriisin sarake, jolla haluttu alkio sijaitsee.
@@ -83,17 +109,44 @@ public class Matriisi {
         }
     }
     
+    /**
+     * Palauttaa matriisin alkiot sisältävän taulukon.
+     * 
+     * @return Kaksiulotteinen taulukko, johon matriisin alkiot on talletettu.
+     */
+    
     public double[][] getAlkiot() {
         return alkiot;
     }
+
+    /**
+     * Palauttaa matriisin rivien lukumäärän.
+     * 
+     * @return Ei-negatiivinen kokonaisluku.
+     */
     
     public int getRivienMaara() {
         return rivienMaara;
     }
     
+    /**
+     * Palauttaa matriisin sarakkeiden lukumäärän.
+     * 
+     * @return Ei-negatiivinen kokonaisluku.
+     */
+    
     public int getSarakkeidenMaara() {
         return sarakkeidenMaara;
     }
+    
+    /**
+     * Kertoo matriisin alkiot vakiolla.
+     * <p>
+     * Jos alkuperäinen matriisi A = (a_ij) ja vakio on c, niin kertomisen
+     * yhteydessä kukin a_ij saa arvon c * a_ij.
+     * 
+     * @param vakio Luku, jolla alkiot kerrotaan.
+     */
     
     public void kerro(double vakio) {
         for (int rivi = 0; rivi < this.getRivienMaara(); rivi++) {
@@ -102,6 +155,15 @@ public class Matriisi {
              }
         }
     }
+    
+    /**
+     * Lisää matriisin alkioihin toisen samankokoisen matriisin alkiot.
+     * <p>
+     * Jos alkuperäinen matriisi A = (a_ij) ja lisättävä matriisi B = (b_ij),
+     * niin lisäyksen yhteydessä kukin a_ij saa arvon a_ij + b_ij.
+     * 
+     * @param matriisi Lisättävä matriisi.
+     */
     
     public void lisaa(Matriisi matriisi) {
         if ( this.getRivienMaara() == matriisi.getRivienMaara() &&
@@ -114,7 +176,8 @@ public class Matriisi {
         }
     }        
     
-    /** Kääntää matriisin pystyakselinsa ympäri.
+    /**
+     * Kääntää matriisin pystyakselinsa ympäri.
      * <p>
      * Kääntäminen tehdään siten, että jos sarake n on matriisin keskimmäinen,
      * niin sarakkeet n-1 ja n+1 vaihdetaan keskenään, samoin sarakkeet n-2 ja
@@ -132,7 +195,8 @@ public class Matriisi {
         }
     }
     
-    /** Kääntää matriisin vaaka-akselinsa ympäri.
+    /**
+     * Kääntää matriisin vaaka-akselinsa ympäri.
      * <p>
      * Kääntäminen tehdään siten, että jos rivi m on matriisin keskimmäinen,
      * niin rivit m-1 ja m+1 vaihdetaan keskenään, samoin rivit m-2 ja
@@ -150,7 +214,11 @@ public class Matriisi {
         }
     }
     
-    /** Kiertää matriisia tasossa 180 astetta.
+    /**
+     * Kiertää matriisia tasossa 180 astetta.
+     * <p>
+     * Kierto tehdään kääntämällä matriisi ensin pysty- ja sitten
+     * vaaka-akselinsa ympäri.
      */
     
     public void kierra180Astetta() {
@@ -158,18 +226,18 @@ public class Matriisi {
         kaannaYlosAlas();
     }
     
-    /** Konvoloi kaksi matriisia.
+    /**
+     * Konvoloi kaksi matriisia.
      * <p>
-     * Kohdematriisin reunoilla konvoluutio lasketaan siten kuin matriisi olisi
-     * ympäröity nolla-alkioilla. Tämä aiheittaa vääristymiä niiden alkioiden
-     * arvoissa, jotka sijaitsevat matriisin reunoilla.
+     * Ensimmäinen matriisi vastaa kuvapikselin kanavaa, toinen käytettävää suodinta.
      * 
      * @param suodin Suodinmatriisi eli konvoluutioydin.
      * @return Konvoluution tuloksena saatu matriisi. Rivien ja sarakkeiden määrä
-     * on sama kuin alkuperäisessä matriisissa.
+     * on sama kuin ensimmäisessä matriisissa.
      */
     
-    public Matriisi konvoloi(Matriisi suodin) {        
+    public Matriisi konvoloi(Matriisi suodin) {
+        suodin.kierra180Astetta();
         Matriisi konvoloitu = new Matriisi( this.getRivienMaara(), this.getSarakkeidenMaara() );
         for (int pikselinRivi = 0; pikselinRivi < this.rivienMaara; pikselinRivi++) {                            
             for (int pikselinSarake = 0; pikselinSarake < this.sarakkeidenMaara; pikselinSarake++) {     
@@ -179,6 +247,22 @@ public class Matriisi {
         }
         return konvoloitu;
     }
+    
+    /**
+     * Laskee konvoluutiosumman määrätyn pikselin kohdalla.
+     * <p>
+     * Konvoluutiosumma lasketaan kahden matriisin alkioista. Ensimmäinen eli 
+     * kohdematriisi vastaa kuvapikselin kanavaa, toinen käytettävää suodinta. 
+     * <p>
+     * Kohdematriisin reunoilla konvoluutio lasketaan siten kuin matriisi olisi
+     * ympäröity nolla-alkioilla.
+     * 
+     * @param pikselinRivi Käsiteltävän kuvapikselin rivi.
+     * @param pikselinSarake Käsiteltävän kuvapikselin sarake.
+     * @param suodin Suodinmatriisi eli konvoluutioydin.
+     * @return Konvoluution tuloksena saatu matriisi. Rivien ja sarakkeiden määrä
+     * on sama kuin kohdematriisissa.
+     */
     
     private double laskeKonvoluutiosumma(int pikselinRivi, int pikselinSarake, Matriisi suodin) {
         int suotimenSade = ( suodin.getRivienMaara() - 1 ) / 2; 

@@ -6,14 +6,24 @@ import javax.swing.*;
 import kuvankasittely.domain.*;
 
 /**
+ * Paneeli kuvien piirtämistä varten.
+ * 
  * @author      kimpe
- * @version     5.0
- * @since       2013-10-03
+ * @version     6.0
+ * @since       2013-10-11
  */
 
 public class Paneeli extends JPanel {
     
-    BufferedImage puskuroituKuva;
+    /**
+     * Luokan sisäinen esitysmuoto kuvalle.
+     */    
+    
+    private BufferedImage puskuroituKuva;
+    
+    /**
+     * Luo uuden, taustaväriltään valkoisen paneelin.
+     */    
     
     public Paneeli() {
         super.setBackground(Color.WHITE);
@@ -25,9 +35,21 @@ public class Paneeli extends JPanel {
          graphics.drawImage(puskuroituKuva, 0, 0, null);
     }
  
+    /**
+     * Asettaa piirrettävän kuvan.
+     * 
+     * @param kuva Piirrettävä kuva.
+     */    
+    
     public void setKuva(Kuva kuva) {
         this.puskuroituKuva = kuva.getPuskuroituKuva();
     }
+    
+    /**
+     * Palauttaa piirrettävän kuvan.
+     * 
+     * @return Paneeliin liittyvä kuva.
+     */    
     
     public BufferedImage getKuva() {
         return puskuroituKuva;

@@ -7,16 +7,40 @@ import kuvankasittely.domain.*;
 import kuvankasittely.ui.*;
 
 /**
+ * Ohjelman toimintalogiikasta vastaava luokka.
+ * <p>
+ * Huolehtii tiedostoista, piirtämisestä ja kuvan muokkaamisesta.
+ * 
  * @author      kimpe
- * @version     5.0
- * @since       2013-10-03
+ * @version     6.0
+ * @since       2013-10-11
  */
 
 public class Logiikka {
+
+    /**
+     * Ohjelman käyttämät luku- ja kirjoitustiedostot.
+     */        
     
     private HashMap<String,File> tiedostot;
+    
+    /**
+     * Alkuperäiset ja muokatut kuvat.
+     */     
+    
     private HashMap<String,Kuva> kuvat;
+    
+    /**
+     * Kuvan muokkaamiseen käytettävä suodin.
+     */     
+    
     private Suodin suodin;
+    
+    /**
+     * Luo ohjelman toimintalogiikan.
+     * <p>
+     * Suotimeksi asetetaan oletusarvoisesti deltafunktio.
+     */
     
     public Logiikka() {
         this.tiedostot = new HashMap<String,File>();
@@ -24,9 +48,11 @@ public class Logiikka {
         this.suodin = new Suodin("Deltafunktio", 1);
     }
 
-    /** Lataa kuvan tiedostosta.
+    /**
+     * Lataa kuvan tiedostosta.
      * 
-     * @return True, jos tiedoston avaaminen ja kuvan lataaminen onnistuvat, muutoin False.
+     * @param lukutiedosto Tiedosto, josta kuva ladataan.
+     * @return True, jos kuvan lataaminen onnistui, muutoin False.
      */
     
     public boolean lataaKuva(File lukutiedosto) {
@@ -40,8 +66,10 @@ public class Logiikka {
         }
     }
     
-    /** Piirtää kuvan käyttäjän tarkasteltavaksi.
+    /**
+     * Piirtää kuvan käyttäjän tarkasteltavaksi.
      * 
+     * @param tunnus Avain, jonka perusteella kuva haetaan hajautustaulusta.
      * @param paneeli Paneeli, johon kuva piirretään.
      */
     
@@ -52,9 +80,10 @@ public class Logiikka {
         }
     }
 
-    /** Tummentaa kuvaa 10 prosenttia.
+    /**
+     * Tummentaa kuvaa 10 prosenttia.
      * 
-     * @param kuva Tummennettava kuva.
+     * @param kuva Käsiteltävä kuva.
      */
     
     public void tummennaKuvaa(Kuva kuva) {
@@ -63,9 +92,10 @@ public class Logiikka {
         }
     }
     
-    /** Vaalentaa kuvaa 10 prosenttia.
+    /**
+     * Vaalentaa kuvaa 10 prosenttia.
      * 
-     * @param kuva Vaalennettava kuva.
+     * @param kuva Käsiteltävä kuva.
      */
     
     public void vaalennaKuvaa(Kuva kuva) {
@@ -74,20 +104,35 @@ public class Logiikka {
         }
     }
     
-    /** Suodattaa kuvan erikseen määriteltävällä suotimella.
-     * <p>
-     * Suodatus tapahtuu konvoluution avulla. 
+    /**
+     * Palauttaa logiikkaan liittyvän suotimen.
      * 
-     * @param kuva Suodatettava kuva.
+     * @return Suodin.
      */
     
     public Suodin getSuodin() {
         return suodin;
     }
+
+    /**
+     * Asettaa logiikkaan liittyvän suotimen.
+     * 
+     * @param tyyppi Tyyppiä kuvaava merkkijono.
+     * @param sade Ei-negatiivinen kokonaisluku.
+     * @see Suodin
+     */
     
     public void setSuodin(String tyyppi, int sade) {
         suodin = new Suodin(tyyppi, sade);
     }
+    
+    /**
+     * Suodattaa kuvan logiikkaan liittyvällä suotimella.
+     * <p>
+     * Suodatus tapahtuu konvoloimalla kuva suotimen matriisilla.
+     * 
+     * @param kuva Suodatettava kuva.
+     */
     
     public void suodataKuva(Kuva kuva) {
         if (kuva != null) {
@@ -95,6 +140,12 @@ public class Logiikka {
         }
     }
 
+    /**
+     * Palauttaa alkuperäisen kuvan käyttäjän tarkasteltavaksi.
+     * 
+     * @param paneeli Paneeli, johon kuva piirretään.
+     */
+    
     public void palautaAlkuperainenKuva(Paneeli paneeli) {
         kuvat.put("muokattu", new Kuva( kuvat.get("alkuperainen") ) );
         piirraKuva("alkuperainen", paneeli);
@@ -102,31 +153,48 @@ public class Logiikka {
     
     /** Tallentaa kuvan tiedostoon.
      * 
-     * @return True, jos tiedoston avaaminen ja kuvan tallentaminen onnistuvat, muutoin False.
+     * @return True, jos kuvan tallentaminen onnistui, muutoin False.
      */
     
-    public boolean tallennaKuva() {
-        if (kuvat.get("muokattu") != null) {
-            tiedostot.put("kirjoitustiedosto", new File("../../muokattuKuva.PNG") );        
-            try {
-                tiedostot.get("kirjoitustiedosto").createNewFile();
-                ImageIO.write(kuvat.get("muokattu").getPuskuroituKuva(), "PNG",
-                              tiedostot.get("kirjoitustiedosto") );
-                return true;
-            } catch (IOException poikkeus) {
-                return false;
-            }
+    public boolean tallennaKuva(File kirjoitustiedosto) {
+        tiedostot.put("kirjoitustiedosto", kirjoitustiedosto);        
+        try {
+            tiedostot.get("kirjoitustiedosto").createNewFile();
+            ImageIO.write(kuvat.get("muokattu").getPuskuroituKuva(), "PNG",
+                          tiedostot.get("kirjoitustiedosto") );
+            return true;
+        } catch (IOException poikkeus) {
+            return false;
         }
-        return false;
     }
+    
+    /**
+     * Palauttaa ohjelman käyttämät tiedostot.
+     * 
+     * @return Hajautustaulu, johon tiedostot on talletettu.
+     */
     
     public HashMap<String,File> getTiedostot() {
         return tiedostot;
     }
     
+    /**
+     * Palauttaa alkuperäiset ja muokatut kuvat.
+     * 
+     * @return Hajautustaulu, johon kuvat on talletettu.
+     */
+    
     public HashMap<String,Kuva> getKuvat() {
         return kuvat;
     }
+    
+    /**
+     * Säätää kuvan kirkkautta vakiokertoimen verran.
+     * 
+     * @param kuva Käsiteltävä kuva.
+     * @param kerroin Kaksoistarkkuuden liukuluku. Jos kerroin on pienempi kuin
+     * 1.0, kuva tummenee. Jos kerroin on suurempi kuin 1.0, kuva vaalenee.
+     */
     
     private void saadaKuvanKirkkautta(Kuva kuva, double kerroin) {
         for (int kanava = 0; kanava < kuva.getKanavienMaara(); kanava++) {

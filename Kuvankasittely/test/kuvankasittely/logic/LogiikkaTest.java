@@ -1,6 +1,7 @@
 package kuvankasittely.logic;
 
 import java.io.File;
+import java.nio.file.*;
 import kuvankasittely.domain.*;
 import kuvankasittely.ui.*;
 import static org.junit.Assert.*;
@@ -8,33 +9,33 @@ import org.junit.Test;
 
 /**
  * @author      kimpe
- * @version     5.0
- * @since       2013-10-03
+ * @version     6.0
+ * @since       2013-10-11
  */
 
 public class LogiikkaTest {
     
     private Logiikka logiikka;
-    File tiedosto;
+    File lukutiedosto;
     double tarkkuus;
     
     public LogiikkaTest() {
         logiikka = new Logiikka();
-        tiedosto = new File("../dokumentointi/luokkakaavio.PNG");
+        lukutiedosto = new File("../dokumentointi/luokkakaavio.PNG");
         tarkkuus = Math.pow(10.0, -4.0);
     }
     
     @Test
     public void kuvanLataaminen() {
         String virheilmoitus = "Kuvan lataaminen epäonnistui.";
-        assertTrue( virheilmoitus, logiikka.lataaKuva(tiedosto) );
+        assertTrue( virheilmoitus, logiikka.lataaKuva(lukutiedosto) );
     }
     
     @Test
     public void kuvanPiirtaminen() {
         String virheilmoitus = "Kuvan piirtäminen epäonnistui.";
         Paneeli paneeli = new Paneeli();
-        logiikka.lataaKuva(tiedosto);
+        logiikka.lataaKuva(lukutiedosto);
         logiikka.piirraKuva("alkuperainen", paneeli);
         assertNotNull( virheilmoitus, paneeli.getKuva() );
     }
@@ -42,8 +43,13 @@ public class LogiikkaTest {
     @Test
     public void kuvanTallentaminen() {
         String virheilmoitus = "Kuvan tallentaminen epäonnistui.";
-        logiikka.lataaKuva(tiedosto);
-        assertTrue( virheilmoitus, logiikka.tallennaKuva() );
+        logiikka.lataaKuva(lukutiedosto);
+        String tiedostonNimi = "../../luokkakaavionKopio.PNG";
+        Path hakemistopolku = FileSystems.getDefault().getPath(tiedostonNimi);          
+        if ( Files.notExists(hakemistopolku, LinkOption.NOFOLLOW_LINKS) ) {
+            File kirjoitustiedosto = new File(tiedostonNimi);
+            assertTrue( virheilmoitus, logiikka.tallennaKuva(kirjoitustiedosto) );
+        }
     }
 
     @Test
@@ -57,7 +63,7 @@ public class LogiikkaTest {
     }
     
     private boolean tarkistaKirkkaudenSaato(String toiminto) {
-        logiikka.lataaKuva(tiedosto);
+        logiikka.lataaKuva(lukutiedosto);
         Kuva kuva = logiikka.getKuvat().get("alkuperainen");
         double testialkio = kuva.getKanava(0).getAlkio(0, 0);        
         if ( toiminto.equals("Tummennus") ) {            

@@ -5,37 +5,111 @@ import kuvankasittely.domain.*;
 import kuvankasittely.logic.*;
 
 /**
+ * Ikkunoiden yleiset palvelut määrittävä rajapinta.
+ * 
  * @author      kimpe
- * @version     5.0
- * @since       2013-10-03
+ * @version     6.0
+ * @since       2013-10-11
  */
 
 public interface Ikkuna {
     
-    public void teeAlustukset();
+    /**
+     * Alustaa ikkunan käyttöä varten.
+     */
+    
+    void teeAlustukset();
 
-    public void lisaaKuuntelijat(Logiikka logiikka);
+    /**
+     * Lisää tarvittavat tapahtumankuuntelijat ikkunan komponenteille.
+     * 
+     * @param logiikka Ohjelman toimintalogiikka.
+     */
     
-    public void setKehys(JFrame kehys);
+    void lisaaKuuntelijat(Logiikka logiikka);
     
-    public void setEdeltaja(Ikkuna edeltaja);        
+    /**
+     * Asettaa ikkunaan liittyvän kehyksen.
+     * 
+     * @param kehys Käytettävä kehys.
+     */    
     
-    public void setSeuraaja(Ikkuna seuraaja);        
+    void setKehys(JFrame kehys);
     
-    public void setPaneeli(Paneeli paneeli);
+    /**
+     * Asettaa ikkunan edeltäjän.
+     * 
+     * @param edeltaja Toinen ikkuna, josta käsin tämä ikkuna on avattu.
+     */
+    
+    void setEdeltaja(Ikkuna edeltaja);        
+    
+    /**
+     * Asettaa ikkunan seuraajan.
+     * 
+     * @param seuraaja Toinen ikkuna, joka on avattu tästä ikkunasta käsin.
+     */
+    
+    void setSeuraaja(Ikkuna seuraaja);        
+    
+    /**
+     * Asettaa ikkunaan liittyvän paneelin.
+     * 
+     * @param paneeli Paneeli, johon voi piirtää.
+     */
+    
+    void setPaneeli(Paneeli paneeli);
 
-    public JFrame getKehys();
+    /**
+     * Palauttaa kehyksen.
+     * 
+     * @return Ikkunaan liittyvä kehys.
+     */
     
-    public Ikkuna getEdeltaja();
+    JFrame getKehys();
     
-    public Ikkuna getSeuraaja();
+    /**
+     * Palauttaa ikkunan edeltäjän.
+     * 
+     * @return Ikkuna, josta käsin tämä ikkuna on avattu.
+     */
     
-    public Paneeli getPaneeli();
+    Ikkuna getEdeltaja();
     
-    public void paivitaSuodin(Suodin suodin);    
+    /**
+     * Palauttaa ikkunan seuraajan.
+     * 
+     * @return Ikkuna, joka on avattu tästä ikkunasta käsin.
+     */
     
-    public void nayta();    
+    Ikkuna getSeuraaja();
     
-    public void piilota();
+    /**
+     * Palauttaa paneelin.
+     * 
+     * @return Ikkunaan liittyvä paneeli.
+     */
+    
+    Paneeli getPaneeli();
+    
+    /**
+     * Päivittää ikkunaan liittyvän suotimen.
+     * 
+     * @param suodin Uusi suodin. Korvaa aiemman suotimen, jos sellainen on olemassa.
+     */
+    
+    void paivitaSuodin(Suodin suodin);
+    
+    /**
+     * Asettaa ikkunan näkyville.
+     */
+    
+    void nayta();    
+    
+    /**
+     * Poistaa ikkunan näkyvistä.
+     */
+    
+    void piilota();
     
 }

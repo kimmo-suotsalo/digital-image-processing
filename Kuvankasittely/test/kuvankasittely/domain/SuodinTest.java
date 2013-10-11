@@ -5,8 +5,8 @@ import org.junit.Test;
 
 /**
  * @author      kimpe
- * @version     5.0
- * @since       2013-10-03
+ * @version     6.0
+ * @since       2013-10-11
  */
 
 public class SuodinTest {

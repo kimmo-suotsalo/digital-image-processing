@@ -5,17 +5,54 @@ import javax.swing.*;
 import kuvankasittely.logic.*;
 
 /**
+ * Tapahtumankuuntelija painikkeiden toiminnan toteuttamiseksi.
+ * 
  * @author      kimpe
- * @version     5.0
- * @since       2013-10-03
+ * @version     6.0
+ * @since       2013-10-11
  */
 
 public class Kuuntelija implements ActionListener {
 
-    Logiikka logiikka;
-    JButton painike;
-    Paneeli paneeli;
-    Ikkuna edeltaja, seuraaja;
+    /**
+     * Ohjelman toimintalogiikka.
+     */    
+    
+    private Logiikka logiikka;
+    
+    /**
+     * Painike, jonka tapahtumia kuunnellaan.
+     */    
+    
+    private JButton painike;
+    
+    /**
+     * Paneeli, johon voi piirtää.
+     */    
+    
+    private Paneeli paneeli;
+    
+    /**
+     * Toinen ikkuna, josta käsin tähän kuuntelijaan liittyvä ikkuna on avattu.
+     */
+
+    private Ikkuna edeltaja;
+
+    /**
+     * Toinen ikkuna, joka on avattu tähän kuuntelijaan liittyvästä ikkunasta käsin.
+     */
+    
+    private Ikkuna seuraaja;
+    
+    /**
+     * Luo uuden tapahtumankuuntelijan.
+     * 
+     * @param logiikka Ohjelman toimintalogiikka.
+     * @param painike Painike, jonka tapahtumia kuunnellaan.
+     * @param paneeli Paneeli piirtämistä varten.
+     * @param edeltaja Toinen ikkuna, josta käsin tähän kuuntelijaan liittyvä ikkuna on avattu.
+     * @param seuraaja Toinen ikkuna, joka on avattu tähän kuuntelijaan liittyvästä ikkunasta käsin.
+     */
     
     public Kuuntelija (Logiikka logiikka, JButton painike, Paneeli paneeli, Ikkuna edeltaja, Ikkuna seuraaja) {
         super();
@@ -34,6 +71,10 @@ public class Kuuntelija implements ActionListener {
             kasitteleSuodatusikkunanPainike();
         }                
     }
+
+    /** 
+     * Käsittee pääikkunan painikkeisiin liittyvät tapahtumat.
+     */
     
     private void kasittelePaaikkunanPainike() {
         switch ( painike.getActionCommand() ) {
@@ -53,20 +94,39 @@ public class Kuuntelija implements ActionListener {
                 logiikka.palautaAlkuperainenKuva(paneeli);
                 return;
             case "Tallenna kuva":
-                logiikka.tallennaKuva();
-                return;
+                this.tallennaKuva();
+                break;
             case "Lopeta":
                 System.exit(0);
         }
         if (paneeli != null) logiikka.piirraKuva("muokattu", paneeli);   
     }
 
+    /** 
+     * Avaa tiedostoikkunan ja lataa kuvan käyttäjän valitsemasta tiedostosta.
+     */
+    
     private void lataaKuva() {
         JFileChooser tiedostovalitsin = new JFileChooser();
         if ( tiedostovalitsin.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
             logiikka.lataaKuva( tiedostovalitsin.getSelectedFile() );
         }        
     }
+    
+    /** 
+     * Avaa tiedostoikkunan ja tallentaa kuvan käyttäjän nimeämään tiedostoon.
+     */
+    
+    private void tallennaKuva() {
+        JFileChooser tiedostovalitsin = new JFileChooser();
+        if ( tiedostovalitsin.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+            logiikka.tallennaKuva( tiedostovalitsin.getSelectedFile() );
+        }        
+    }
+    
+    /** 
+     * Käsittee suodatusikkunan painikkeisiin liittyvät tapahtumat.
+     */
     
     private void kasitteleSuodatusikkunanPainike() {
         switch ( painike.getActionCommand() ) {

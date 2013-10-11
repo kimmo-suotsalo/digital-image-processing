@@ -3,20 +3,49 @@ package kuvankasittely.domain;
 import java.awt.image.*;
 
 /**
+ * Käyttäjälle näkyvä kuva.
+ * <p>
+ * Luokan sisäinen esitysmuoto kuvalle on puskuroitu kuva (BufferedImage), johon
+ * liittyy kuvarasteri (WritableRaster). Rasteri koostuu pikseleistä, jotka
+ * sisältävät yhden tai useamman RGB-kanavan. Värikuvan tapauksessa kanavien
+ * määrä on yleensä kolme. Kutakin kanavaa vastaa oma matriisinsa, jonka alkiot
+ * voivat saada kokonaislukuarvoja väliltä [0, 255].
+ * 
  * @author      kimpe
- * @version     5.0
- * @since       2013-10-03
+ * @version     6.0
+ * @since       2013-10-11
  */
 
 public class Kuva {
+
+    /**
+     * Luokan sisäinen esitysmuoto kuvalle.
+     */    
     
     private BufferedImage puskuroituKuva;
+    
+    /**
+     * Muuutokset mahdollistava kuvarasteri.
+     */        
+    
     private WritableRaster rasteri;
+          
+    /**
+     * Luo uuden kuvan puskuroidusta kuvasta.
+     * 
+     * @param puskuroituKuva Kuvarasterin sisältävä puskuroitu kuva.
+     */            
     
     public Kuva(BufferedImage puskuroituKuva){
         this.puskuroituKuva = puskuroituKuva;
         this.rasteri = puskuroituKuva.getRaster();
     }
+
+    /**
+     * Luo uuden kuvan toisesta kuvasta.
+     * 
+     * @param alkuperainen Kuva, jonka sisältö kopioidaan uuteen kuvaan.
+     */
     
     public Kuva(Kuva alkuperainen){
         rasteri = alkuperainen.getRasteri().createCompatibleWritableRaster();
@@ -24,27 +53,59 @@ public class Kuva {
         puskuroituKuva = new BufferedImage( alkuperainen.getPuskuroituKuva().getColorModel(), rasteri, true, null); 
     }
     
+    /**
+     * Palauttaa RGB-kanavien lukumäärän.
+     * 
+     * @return Ei-negatiivinen kokonaisluku, värikuvilla yleensä 3.
+     */
+    
     public int getKanavienMaara() {
         return rasteri.getNumBands();
     }
     
+    /**
+     * Palauttaa kuvan leveyden pikseleinä.
+     * 
+     * @return Ei-negatiivinen kokonaisluku.
+     */
+    
     public int getKuvanLeveys() {
         return rasteri.getWidth();
     }
+
+    /**
+     * Palauttaa kuvan korkeuden pikseleinä.
+     * 
+     * @return Ei-negatiivinen kokonaisluku.
+     */
     
     public int getKuvanKorkeus() {
         return rasteri.getHeight();
     }
     
+    /**
+     * Palauttaa pikseleistä koostuvan kuvarasterin.
+     * 
+     * @return Muuutokset mahdollistava kuvarasteri.
+     */
+    
     public WritableRaster getRasteri() {
         return rasteri;
     }    
+    
+    /**
+     * Palauttaa kuvan muodossa, joka mahdollistaa piirtämisen ja
+     * tiedosto-operaatiot.
+     * 
+     * @return Kuva puskuroidussa muodossa.
+     */
     
     public BufferedImage getPuskuroituKuva() {
         return puskuroituKuva;
     }
     
-    /** Palauttaa RGB-kanavan.
+    /** 
+     * Palauttaa RGB-kanavan.
      * <p>
      * Metodi määrittelee matriisin, jonka rivien määrä vastaa kuvan korkeutta ja sarakkeiden
      * määrä kuvan leveyttä. Matriisin alkiot saadaan kuvarasterin pikselin arvoista valitulla
@@ -70,7 +131,8 @@ public class Kuva {
         return null;
     }
     
-    /** Asettaa RGB-kanavan.
+    /**
+     * Asettaa RGB-kanavan.
      * <p>
      * Metodi asettaa matriisin alkiot kuvarasterin pikselin arvoiksi valitulla RGB-kanavalla.
      * <p>
@@ -101,11 +163,12 @@ public class Kuva {
         }
     }
     
-    /** Konvoloi kuvan valitulla suotimella.
+    /**
+     * Konvoloi kuvan valitulla suotimella.
      * <p>
-     * Metodi määrittelee kohdematriisin, jonka alkiot saadaan kuvarasterin pikselin arvoista
-     * valitulla kanavalla. Kohdematriisin ja suotimen välinen konvoluutio lasketaan Matriisi-luokan
-     * metodilla konvoloi, mutta suodinmatriisin kierto tehdään jo tässä metodissa.
+     * Kutakin RGB-kanavaa vastaava matriisi konvoloidaan erikseen. Varsinaiseen
+     * laskentaan käytetään Matriisi-luokan metodia konvoloi. Konvoluution tuloksena
+     * saatu matriisi asetetaan käsiteltävän kanavan matriisiksi.
      * 
      * @param suodin Suodinmatriisi.
      * @see Matriisi
@@ -113,11 +176,21 @@ public class Kuva {
     
     public void konvoloi(Matriisi suodin) {
         for (int kanava = 0; kanava < this.getKanavienMaara(); kanava++) {            
-            suodin.kierra180Astetta();
             Matriisi kohde = this.getKanava(kanava).konvoloi(suodin);
             this.setKanava(kanava, kohde);
         }
     }
+    
+    /**
+     * Muuntaa matriisin alkion arvon pikseliin sopivaksi.
+     * <p>
+     * Pyöristää alkion arvon lähimpään kokonaislukuun ja muuntaa sen
+     * kokonaislukutyyppiseksi. Jos saatu luku on negatiivinen, palautetaan 0.
+     * Jos luku on suurempi kuin 255, palautetaan 255.
+     * 
+     * @param matriisinAlkio Muunnettava alkio.
+     * @return Pikseliin sopiva arvo.
+     */
     
     private int muunnaPikselinArvoksi(double matriisinAlkio) {
         int pikselinArvo = Math.round( (float) matriisinAlkio );

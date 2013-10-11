@@ -5,9 +5,14 @@ import kuvankasittely.logic.*;
 import kuvankasittely.ui.*;
 
 /**
+ * Ohjelman pääluokka.
+ * <p>
+ * Luo ensin ohjelmalogiikan ja graafisen käyttöliittymän, minkä jälkeen
+ * käynnistää käyttöliittymän.
+ * 
  * @author      kimpe
- * @version     5.0
- * @since       2013-10-03
+ * @version     6.0
+ * @since       2013-10-11
  */
 
 public class Main {

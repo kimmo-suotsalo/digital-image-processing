@@ -6,17 +6,50 @@ import kuvankasittely.domain.*;
 import kuvankasittely.logic.*;
 
 /**
+ * Ohjelman pääikkuna.
+ * 
  * @author      kimpe
- * @version     5.0
- * @since       2013-10-03
+ * @version     6.0
+ * @since       2013-10-11
  */
 
 public class Paaikkuna implements Ikkuna {
     
-    Ikkuna edeltaja, seuraaja;
-    JFrame kehys;
-    JPanel painikerivi;
-    Paneeli paneeli;
+    /**
+     * Toinen ikkuna, josta käsin tämä ikkuna on avattu.
+     */    
+    
+    private Ikkuna edeltaja;
+    
+    /**
+     * Toinen ikkuna, joka avataan tästä ikkunasta käsin.
+     */    
+    
+    private Ikkuna seuraaja;
+    
+    /**
+     * Kehys, johon ikkunan komponentit sijoitetaan.
+     */    
+    
+    private JFrame kehys;
+    
+    /**
+     * Ikkunaan liittyvien painikkeiden muodostama kokonaisuus.
+     */    
+    
+    private JPanel painikerivi;
+    
+    /**
+     * Paneeli, johon käsiteltävä kuva piirretään.
+     */        
+    
+    private Paneeli paneeli;
+    
+    /**
+     * Luo uuden pääikkunan.
+     * 
+     * @param otsikko Ikkunan yläreunassa näkyvä merkkijono.
+     */
     
     public Paaikkuna(String otsikko) {
         kehys = new JFrame(otsikko);
@@ -79,6 +112,12 @@ public class Paaikkuna implements Ikkuna {
         kehys.setVisible(false);
     }
 
+    /**
+     * Lisää painikkeille tapahtumankuuntelijat.
+     * 
+     * @param logiikka Ohjelman toimintalogiikka.
+     */    
+    
     @Override
     public void lisaaKuuntelijat(Logiikka logiikka) {
         int painikkeidenMaara = painikerivi.getComponentCount();
@@ -88,9 +127,14 @@ public class Paaikkuna implements Ikkuna {
         }
     }
     
+    /**
+     * Alustaa ikkunan halutun kokoiseksi, määrittää sen sijainnin ja
+     * lisää tarvittavat komponentit. 
+     */
+    
     @Override
     public void teeAlustukset() {
-        asettele(200, 100, 800, 657, new BorderLayout() );
+        asettele(200, 100, 1000, 750, new BorderLayout() );
         lisaaPaneeli(BorderLayout.CENTER);
         lisaaPainikerivi( BorderLayout.SOUTH, new FlowLayout() );
         String[] painikkeidenNimet = {"Lataa kuva", "Tummenna", "Vaalenna", "Suodata", "Palauta", "Tallenna kuva", "Lopeta"};
@@ -99,12 +143,29 @@ public class Paaikkuna implements Ikkuna {
         }
     }
     
+    /**
+     * Sijoittaa ikkunan annettuun sijaintiin annetun kokoisena, asettaa
+     * layoutin ja määrittää ikkunan sulkemiseen liittyvän toiminnon.
+     * 
+     * @param xSijainti Ikkunan vasemman yläkulman x-koordinaatti.
+     * @param ySijainti Ikkunan vasemman yläkulman y-koordinaatti.
+     * @param leveys Ikkunan leveys pikseleinä.
+     * @param korkeus Ikkunan korkeus pikseleinä.
+     * @param layout Ikkunan layout.
+     */
+    
     private void asettele(int xSijainti, int ySijainti, int leveys, int korkeus, LayoutManager layout) {
         kehys.setLocation(xSijainti, ySijainti);
         kehys.setPreferredSize( new Dimension(leveys, korkeus) );
         kehys.setLayout(layout);
-        kehys.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        kehys.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
+    
+    /**
+     * Luo uuden paneelin ja liittää sen ikkunaan.
+     * 
+     * @param sijainti Layoutin tunnistama merkkijonovakio.
+     */
     
     private void lisaaPaneeli(String sijainti) {        
         paneeli = new Paneeli();
@@ -112,9 +173,17 @@ public class Paaikkuna implements Ikkuna {
         ikkunanSisalto.add(paneeli, sijainti);
     }
     
+    /**
+     * Luo uuden painikerivin ja liittää sen ikkunaan.
+     * 
+     * @param sijainti Layoutin tunnistama ikkunan osa.
+     * @param layout Ikkunassa käytettävä layout.
+     */
+    
     private void lisaaPainikerivi(String sijainti, LayoutManager layout) {
         painikerivi = new JPanel( layout );
-        kehys.getContentPane().add(painikerivi, sijainti);
+        Container ikkunanSisalto = kehys.getContentPane();
+        ikkunanSisalto.add(painikerivi, sijainti);
     }
     
 }
