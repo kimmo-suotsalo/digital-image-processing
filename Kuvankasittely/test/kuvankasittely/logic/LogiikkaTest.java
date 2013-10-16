@@ -9,8 +9,8 @@ import org.junit.Test;
 
 /**
  * @author      kimpe
- * @version     6.0
- * @since       2013-10-11
+ * @version     6.1
+ * @since       2013-10-16
  */
 
 public class LogiikkaTest {
@@ -39,29 +39,47 @@ public class LogiikkaTest {
         logiikka.piirraKuva("alkuperainen", paneeli);
         assertNotNull( virheilmoitus, paneeli.getKuva() );
     }
-    
+        
     @Test
     public void kuvanTallentaminen() {
         String virheilmoitus = "Kuvan tallentaminen epäonnistui.";
         logiikka.lataaKuva(lukutiedosto);
-        String tiedostonNimi = "../../luokkakaavionKopio.PNG";
+        String tiedostonNimi = "../../luokkakaavionKopio.jpg";
         Path hakemistopolku = FileSystems.getDefault().getPath(tiedostonNimi);          
         if ( Files.notExists(hakemistopolku, LinkOption.NOFOLLOW_LINKS) ) {
             File kirjoitustiedosto = new File(tiedostonNimi);
             assertTrue( virheilmoitus, logiikka.tallennaKuva(kirjoitustiedosto) );
         }
     }
+        
+    @Test
+    public void muunnaHarmaasavyksiRajaaKuvanKanavienMaaranYhteen() {
+        String virheilmoitus = "Harmaasävykuvassa oli enemmän kuin yksi RGB-kanava.";
+        logiikka.lataaKuva(lukutiedosto);
+        Kuva alkuperainen = logiikka.getKuvat().get("alkuperainen");
+        logiikka.muunnaHarmaasavyksi(alkuperainen);
+        Kuva harmaasavy = logiikka.getKuvat().get("muokattu");
+        assertEquals(virheilmoitus, 1, harmaasavy.getKanavienMaara() );
+    }
+    
+    @Test
+    public void palautaAlkuperainenKuvaAsettaaMuokattavaksiKuvaksiAlkuperaisenKopion() {
+        String virheilmoitus = "Alkuperäisen kuvan palauttaminen epäonnistui.";
+        logiikka.lataaKuva(lukutiedosto);                
+        logiikka.tummennaKuvaa( logiikka.getKuvat().get("muokattu") );
+        logiikka.palautaAlkuperainenKuva( new Paneeli() );
+        for (int kanava = 0; kanava < logiikka.getKuvat().get("alkuperainen").getKanavienMaara(); kanava++) {
+            Matriisi alkuperainen = logiikka.getKuvat().get("alkuperainen").getKanava(kanava);
+            Matriisi palautettu = logiikka.getKuvat().get("muokattu").getKanava(kanava);
+            for (int rivi = 0; rivi < alkuperainen.getRivienMaara(); rivi++) {
+                 for (int sarake = 0; sarake < alkuperainen.getSarakkeidenMaara(); sarake++) {                
+                    assertEquals(virheilmoitus, (int) alkuperainen.getAlkio(rivi, sarake),
+                                 (int) palautettu.getAlkio(rivi, sarake) );
+                 }
+            }
+        }
+    }
 
-    @Test
-    public void tummennaKuvaaVahentaaKuvanKirkkautta10prosenttia() {       
-        assertTrue( "Kuvan tummennus epäonnistui.", tarkistaKirkkaudenSaato("Tummennus") );        
-    }
-    
-    @Test
-    public void vaalennaKuvaaLisaaKuvanKirkkautta10prosenttia() {
-        assertTrue( "Kuvan vaalennus epäonnistui.", tarkistaKirkkaudenSaato("Vaalennus") );        
-    }
-    
     private boolean tarkistaKirkkaudenSaato(String toiminto) {
         logiikka.lataaKuva(lukutiedosto);
         Kuva kuva = logiikka.getKuvat().get("alkuperainen");
@@ -80,6 +98,16 @@ public class LogiikkaTest {
             }
         }
         return true;
+    }
+    
+    @Test
+    public void tummennaKuvaaVahentaaKuvanKirkkautta10prosenttia() {       
+        assertTrue( "Kuvan tummennus epäonnistui.", tarkistaKirkkaudenSaato("Tummennus") );        
+    }
+        
+    @Test
+    public void vaalennaKuvaaLisaaKuvanKirkkautta10prosenttia() {
+        assertTrue( "Kuvan vaalennus epäonnistui.", tarkistaKirkkaudenSaato("Vaalennus") );        
     }
     
 }

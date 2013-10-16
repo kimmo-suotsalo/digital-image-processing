@@ -4,35 +4,48 @@ KUVANKÄSITTELYN HARJOITUSOHJELMA
 
 AIHE
 
-Toteutetaan ohjelma digitaalisen kuvankäsittelyn harjoittelua varten. Käyttäjä voi tutkia erilaisten
-suodattimien toimintaa konvoluutiossa, suunnitella omia suodattimia ja kokeilla muita toimintoja,
-kuten korrelaatio ja kynnystys. Käsiteltävä kuva ladataan käyttäjän määrittelemästä tiedostosta.
-Valmis kuva voidaan myös tallentaa tiedostoon.
+Toteutetaan ohjelma digitaalisen kuvankäsittelyn harjoittelua varten. Käyttäjä
+voi tutkia erilaisten suodattimien toimintaa konvoluutiossa ja kokeilla muita
+toimintoja, kuten kuvan kirkkauden säätämistä. Käsiteltävä kuva ladataan käyt-
+täjän määrittelemästä tiedostosta. Valmis kuva voidaan myös tallentaa tiedos-
+toon.
 
-Ohjelmaa käytetään graafisen käyttöliittymän avulla. Valmiiden kuvankäsittelymetodien sijaan
-käytetään itse toteutettuja metodeja, jotta käyttäjän on mahdollista ymmärtää kuvankäsittelyn
-periaatteita lähdekoodin avulla.
+Ohjelmaa käytetään graafisen käyttöliittymän avulla. Valmiiden kuvankäsittely-
+metodien sijaan käytetään itse toteutettuja metodeja, jotta käyttäjän on mah-
+dollista ymmärtää kuvankäsittelyn periaatteita lähdekoodin avulla.
 
 KÄYTTÄJÄT
 
 - opiskelijat
 
-YDINTOIMINNOT
+TOIMINNOT
 
 - kuvan lataaminen tiedostosta
 - kirkkauden säätö
+- värikuvan muuntaminen harmaasävykuvaksi
 - digitaalinen suodatus
-    - valmiin suodattimen valinta
+    - suodattimen valinta
     - konvoluution laskeminen
 - kuvan tallentaminen tiedostoon
 
-LISÄTOIMINNOT
+RAKENNE
 
-- digitaalinen suodatus
-    - oman suodattimen määrittely
-- korrelaatio
-    - kohdekuvan määrittely
-    - korrelaation laskeminen
-- kynnystys
-    - kynnysarvojen määrittely
-    - kynnystyksen laskeminen
+Ohjelma jakautuu karkeasti ottaen logiikkaan ja käyttöliittymään. Näitä vastaa-
+vista luokista luodaan ilmentymät pääohjelmassa, minkä jälkeen käyttöliittymä
+huolehtii syötteiden ja tulosteiden välittämisestä ohjelman toimintalogiikalle.
+
+Käyttöliittymä koostuu kahdesta Ikkuna-rajapinnan toteuttavasta luokasta: Pää-
+ikkuna ja Suodatusikkuna. Nämä muodostavat edeltäjä-seuraaja-parin, mikä mahdol-
+listaa navigoinnin ikkunoiden välillä. Pääikkunassa on paneeli kuvan piirtämistä
+varten. Sekä pää- että suodatusikkunassa on painikkeita (JButton), joihin liit-
+tyvät kuuntelijat reagoivat käyttäjän painalluksiin.
+
+Logiikkaan kuuluu suodin sekä mahdollisesti useita kuvia ja tiedostoja (File).
+Lukutiedostosta ladattu alkuperäinen kuva pysyy muistissa ohjelman suorituksen
+ajan, mikä mahdollistaa kuvan nopean palauttamisen. Käyttäjän tekemät muutokset
+muokkaavat toista Kuva-oliota.
+
+Kuhunkin kuvaan liittyy yksi tai useampi matriisi, jotka vastaavat eri RGB-
+kanavia. Harmaasävykuvalla kanavia on yleensä yksi, värikuvalla kolme. Kuvan
+konvolointi suotimella tapahtuu laskemalla konvoluutio erikseen jokaisella
+RGB-kanavalla.

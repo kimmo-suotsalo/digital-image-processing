@@ -11,8 +11,8 @@ import kuvankasittely.ui.*;
  * käynnistää käyttöliittymän.
  * 
  * @author      kimpe
- * @version     6.0
- * @since       2013-10-11
+ * @version     6.1
+ * @since       2013-10-16
  */
 
 public class Main {

@@ -5,8 +5,8 @@ import org.junit.Test;
 
 /**
  * @author      kimpe
- * @version     6.0
- * @since       2013-10-11
+ * @version     6.1
+ * @since       2013-10-16
  */
 
 public class SuodinTest {
@@ -18,21 +18,6 @@ public class SuodinTest {
         suodin = new Suodin("Deltafunktio", 1);
         tarkkuus = Math.pow(10.0, -4.0);
     }
-
-    @Test
-    public void luoNollamatriisiPalauttaaOikeanlaisenMatriisin() {                
-        suodin.setMatriisi( suodin.luoNollamatriisi() );
-        double[] referenssiarvot = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-        tarkistaAlkioidenArvot(referenssiarvot);        
-    }
-    
-    @Test
-    public void luoDeltafunktioPalauttaaOikeanlaisenMatriisin() {                
-        suodin.setMatriisi( suodin.luoNollamatriisi() );
-        suodin.setMatriisi( suodin.luoDeltafunktio() );
-        double[] referenssiarvot = {0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0};
-        tarkistaAlkioidenArvot(referenssiarvot);        
-    }
     
     @Test
     public void luoAlipaastosuodinPalauttaaOikeanlaisenMatriisin() {                
@@ -43,11 +28,19 @@ public class SuodinTest {
         }
         tarkistaAlkioidenArvot(referenssiarvot);        
     }
+        
+    @Test
+    public void luoDeltafunktioPalauttaaOikeanlaisenMatriisin() {                
+        suodin.setMatriisi( suodin.luoNollamatriisi() );
+        suodin.setMatriisi( suodin.luoDeltafunktio() );
+        double[] referenssiarvot = {0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0};
+        tarkistaAlkioidenArvot(referenssiarvot);        
+    }
     
     @Test
-    public void luoYlipaastosuodinPalauttaaOikeanlaisenMatriisin() {                
-        suodin.setMatriisi( suodin.luoYlipaastosuodin() );
-        double[] referenssiarvot = {0.0, -1.0, 0.0, -1.0, 5.0, -1.0, 0.0, -1.0, 0.0};
+    public void luoNollamatriisiPalauttaaOikeanlaisenMatriisin() {                
+        suodin.setMatriisi( suodin.luoNollamatriisi() );
+        double[] referenssiarvot = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
         tarkistaAlkioidenArvot(referenssiarvot);        
     }
  
@@ -55,6 +48,13 @@ public class SuodinTest {
     public void luoReunanetsintasuodinPalauttaaOikeanlaisenMatriisin() {                
         suodin.setMatriisi( suodin.luoReunanetsintasuodin() );
         double[] referenssiarvot = {0.0, 1.0, 0.0, 1.0, -4.0, 1.0, 0.0, 1.0, 0.0};
+        tarkistaAlkioidenArvot(referenssiarvot);        
+    }
+    
+    @Test
+    public void luoYlipaastosuodinPalauttaaOikeanlaisenMatriisin() {                
+        suodin.setMatriisi( suodin.luoYlipaastosuodin() );
+        double[] referenssiarvot = {0.0, -1.0, 0.0, -1.0, 5.0, -1.0, 0.0, -1.0, 0.0};
         tarkistaAlkioidenArvot(referenssiarvot);        
     }
     

@@ -6,8 +6,8 @@ package kuvankasittely.domain;
  * Suotimen ominaisuudet määrää matriisi, joka vastaa valittua suodintyyppiä.
  * 
  * @author      kimpe
- * @version     6.0
- * @since       2013-10-11
+ * @version     6.1
+ * @since       2013-10-16
  */
 
 public class Suodin {
@@ -55,86 +55,6 @@ public class Suodin {
     }
 
     /**
-     * Palauttaa suotimen tyypin.
-     * 
-     * @return Tyyppiä kuvaava merkkijono.
-     */
-    
-    public String getTyyppi() {
-        return tyyppi;
-    }
-    
-    /**
-     * Palauttaa suotimen rivien lukumäärän.
-     * 
-     * @return Ei-negatiivinen kokonaisluku.
-     */
-    
-    public int getRivienMaara() {
-        return rivienMaara;
-    }
-    
-    /**
-     * Palauttaa suotimen sarakkeiden lukumäärän.
-     * 
-     * @return Ei-negatiivinen kokonaisluku.
-     */
-    
-    public int getSarakkeidenMaara() {
-        return sarakkeidenMaara;
-    }
-    
-    /**
-     * Palauttaa suotimeen liittyvän matriisin.
-     * 
-     * @return Matriisi, jonka alkiot ovat kaksoistarkkuuden liukulukuja.
-     */
-    
-    public Matriisi getMatriisi() {
-        return matriisi;
-    }
-
-    /**
-     * Asettaa suotimen tyypin.
-     * 
-     * @param tyyppi Tyyppiä kuvaava merkkijono.
-     */
-    
-    public void setTyyppi(String tyyppi) {
-        this.tyyppi = tyyppi;
-    }
-    
-    /**
-     * Asettaa suotimen rivien lukumäärän.
-     * 
-     * @param rivienMaara Ei-negatiivinen kokonaisluku.
-     */
-    
-    public void setRivienMaara(int rivienMaara) {
-        this.rivienMaara = rivienMaara;
-    }
-
-    /**
-     * Asettaa suotimen sarakkeiden lukumäärän.
-     * 
-     * @param sarakkeidenMaara Ei-negatiivinen kokonaisluku.
-     */
-    
-    public void setSarakkeidenMaara(int sarakkeidenMaara) {
-        this.sarakkeidenMaara = sarakkeidenMaara;
-    }
-
-    /**
-     * Asettaa suotimeen liittyvän matriisin.
-     * 
-     * @param matriisi Matriisi, jonka alkiot ovat kaksoistarkkuuden liukulukuja.
-     */
-    
-    public void setMatriisi(Matriisi matriisi) {
-        this.matriisi = matriisi;
-    }
-    
-    /**
      * Alustaa suotimeen liittyvän matriisin.
      * 
      * @param suotimenTyyppi Tyyppiä kuvaava merkkijono.
@@ -160,15 +80,56 @@ public class Suodin {
     }
     
     /**
-     * Palauttaa matriisin, jonka kaikki alkiot ovat nollia.
+     * Palauttaa suotimeen liittyvän matriisin.
+     * 
+     * @return Matriisi, jonka alkiot ovat kaksoistarkkuuden liukulukuja.
+     */
+    
+    public Matriisi getMatriisi() {
+        return matriisi;
+    }
+       
+    /**
+     * Palauttaa suotimen rivien lukumäärän.
+     * 
+     * @return Ei-negatiivinen kokonaisluku.
+     */
+    
+    public int getRivienMaara() {
+        return rivienMaara;
+    }
+    
+    /**
+     * Palauttaa suotimen sarakkeiden lukumäärän.
+     * 
+     * @return Ei-negatiivinen kokonaisluku.
+     */
+    
+    public int getSarakkeidenMaara() {
+        return sarakkeidenMaara;
+    }
+    
+    /**
+     * Palauttaa suotimen tyypin.
+     * 
+     * @return Tyyppiä kuvaava merkkijono.
+     */
+    
+    public String getTyyppi() {
+        return tyyppi;
+    }
+
+    /**
+     * Palauttaa matriisin, jonka alkiot saadaan jakamalla 1.0 matriisin koolla.
      * 
      * @return Uusi matriisi, joka on kooltaan sama kuin suotimeen liittyvä matriisi.
      */
     
-    public Matriisi luoNollamatriisi() {
-        Matriisi nollamatriisi = new Matriisi(matriisi);
-        nollamatriisi.setAlkiot(0.0);        
-        return nollamatriisi;
+    public Matriisi luoAlipaastosuodin() {
+        Matriisi alipaasto = new Matriisi(matriisi.getRivienMaara(), matriisi.getSarakkeidenMaara() );
+        int alkioidenMaara = matriisi.getRivienMaara() * matriisi.getSarakkeidenMaara();        
+        alipaasto.setAlkiot(1.0 / alkioidenMaara);
+        return alipaasto;
     }
     
     /**
@@ -186,33 +147,17 @@ public class Suodin {
     }
     
     /**
-     * Palauttaa matriisin, jonka alkiot saadaan jakamalla 1.0 matriisin koolla.
+     * Palauttaa matriisin, jonka kaikki alkiot ovat nollia.
      * 
      * @return Uusi matriisi, joka on kooltaan sama kuin suotimeen liittyvä matriisi.
      */
     
-    public Matriisi luoAlipaastosuodin() {
-        Matriisi alipaasto = new Matriisi(matriisi.getRivienMaara(), matriisi.getSarakkeidenMaara() );
-        int alkioidenMaara = matriisi.getRivienMaara() * matriisi.getSarakkeidenMaara();        
-        alipaasto.setAlkiot(1.0 / alkioidenMaara);
-        return alipaasto;
+    public Matriisi luoNollamatriisi() {
+        Matriisi nollamatriisi = new Matriisi(matriisi);
+        nollamatriisi.setAlkiot(0.0);        
+        return nollamatriisi;
     }
-
-    /**
-     * Palauttaa matriisin, jonka alkiot saadaan vähentämällä deltafunktion matriisista
-     * reunanetsintäsuotimen matriisi.
-     * 
-     * @return Uusi matriisi, joka on kooltaan sama kuin suotimeen liittyvä matriisi.
-     */
     
-    public Matriisi luoYlipaastosuodin() {               
-        Matriisi delta = luoDeltafunktio();
-        Matriisi reunanetsinta = luoReunanetsintasuodin();        
-        reunanetsinta.kerro(-1.0);
-        delta.lisaa(reunanetsinta);
-        return delta;        
-    }
-
     /**
      * Palauttaa matriisin, jonka alkioiden arvot perustuvat diskreettiin
      * Laplace-operaattoriin.
@@ -229,5 +174,60 @@ public class Suodin {
         reunanetsinta.setAlkio(2, 1, 1.0);
         return reunanetsinta;
     }
+
+    /**
+     * Palauttaa matriisin, jonka alkiot saadaan vähentämällä deltafunktion matriisista
+     * reunanetsintäsuotimen matriisi.
+     * 
+     * @return Uusi matriisi, joka on kooltaan sama kuin suotimeen liittyvä matriisi.
+     */
     
+    public Matriisi luoYlipaastosuodin() {               
+        Matriisi delta = luoDeltafunktio();
+        Matriisi reunanetsinta = luoReunanetsintasuodin();        
+        reunanetsinta.kerro(-1.0);
+        delta.lisaa(reunanetsinta);
+        return delta;        
+    }
+    
+    /**
+     * Asettaa suotimeen liittyvän matriisin.
+     * 
+     * @param matriisi Matriisi, jonka alkiot ovat kaksoistarkkuuden liukulukuja.
+     */
+    
+    public void setMatriisi(Matriisi matriisi) {
+        this.matriisi = matriisi;
+    }
+        
+    /**
+     * Asettaa suotimen rivien lukumäärän.
+     * 
+     * @param rivienMaara Ei-negatiivinen kokonaisluku.
+     */
+    
+    public void setRivienMaara(int rivienMaara) {
+        this.rivienMaara = rivienMaara;
+    }
+
+    /**
+     * Asettaa suotimen sarakkeiden lukumäärän.
+     * 
+     * @param sarakkeidenMaara Ei-negatiivinen kokonaisluku.
+     */
+    
+    public void setSarakkeidenMaara(int sarakkeidenMaara) {
+        this.sarakkeidenMaara = sarakkeidenMaara;
+    }
+
+    /**
+     * Asettaa suotimen tyypin.
+     * 
+     * @param tyyppi Tyyppiä kuvaava merkkijono.
+     */
+    
+    public void setTyyppi(String tyyppi) {
+        this.tyyppi = tyyppi;
+    }
+            
 }

@@ -9,8 +9,8 @@ import kuvankasittely.logic.*;
  * Ohjelman pääikkuna.
  * 
  * @author      kimpe
- * @version     6.0
- * @since       2013-10-11
+ * @version     6.1
+ * @since       2013-10-16
  */
 
 public class Paaikkuna implements Ikkuna {
@@ -56,92 +56,6 @@ public class Paaikkuna implements Ikkuna {
         teeAlustukset();
         kehys.pack();
     }
-
-    @Override
-    public void setKehys(JFrame kehys) {
-        this.kehys = kehys;
-    }
-
-    @Override
-    public void setEdeltaja(Ikkuna edeltaja) {
-        this.edeltaja = edeltaja;
-    }    
-    
-    @Override
-    public void setSeuraaja(Ikkuna seuraaja) {
-        this.seuraaja = seuraaja;
-    }    
-
-    @Override
-    public void setPaneeli(Paneeli paneeli) {
-        this.paneeli = paneeli;
-    }        
-    
-    @Override
-    public JFrame getKehys() {
-        return kehys;
-    }
-
-    @Override
-    public Ikkuna getEdeltaja() {
-        return edeltaja;
-    }
-
-    @Override
-    public Ikkuna getSeuraaja() {
-        return seuraaja;
-    }       
-
-    @Override
-    public Paneeli getPaneeli() {
-        return this.paneeli;
-    }
-
-    @Override
-    public void paivitaSuodin(Suodin suodin) {
-        return;
-    }
-    
-    @Override
-    public void nayta() {
-        kehys.setVisible(true);
-    }
-
-    @Override
-    public void piilota() {
-        kehys.setVisible(false);
-    }
-
-    /**
-     * Lisää painikkeille tapahtumankuuntelijat.
-     * 
-     * @param logiikka Ohjelman toimintalogiikka.
-     */    
-    
-    @Override
-    public void lisaaKuuntelijat(Logiikka logiikka) {
-        int painikkeidenMaara = painikerivi.getComponentCount();
-        for (int tunnus = 0; tunnus < painikkeidenMaara; tunnus++) {
-            JButton painike = (JButton) painikerivi.getComponent(tunnus);
-            painike.addActionListener( new Kuuntelija(logiikka, painike, paneeli, edeltaja, seuraaja) );    
-        }
-    }
-    
-    /**
-     * Alustaa ikkunan halutun kokoiseksi, määrittää sen sijainnin ja
-     * lisää tarvittavat komponentit. 
-     */
-    
-    @Override
-    public void teeAlustukset() {
-        asettele(200, 100, 1000, 750, new BorderLayout() );
-        lisaaPaneeli(BorderLayout.CENTER);
-        lisaaPainikerivi( BorderLayout.SOUTH, new FlowLayout() );
-        String[] painikkeidenNimet = {"Lataa kuva", "Tummenna", "Vaalenna", "Suodata", "Palauta", "Tallenna kuva", "Lopeta"};
-        for (String painikkeenNimi : painikkeidenNimet) {
-            painikerivi.add( new JButton(painikkeenNimi) );
-        }
-    }
     
     /**
      * Sijoittaa ikkunan annettuun sijaintiin annetun kokoisena, asettaa
@@ -161,18 +75,41 @@ public class Paaikkuna implements Ikkuna {
         kehys.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
     
-    /**
-     * Luo uuden paneelin ja liittää sen ikkunaan.
-     * 
-     * @param sijainti Layoutin tunnistama merkkijonovakio.
-     */
-    
-    private void lisaaPaneeli(String sijainti) {        
-        paneeli = new Paneeli();
-        Container ikkunanSisalto = kehys.getContentPane();
-        ikkunanSisalto.add(paneeli, sijainti);
+    @Override
+    public Ikkuna getEdeltaja() {
+        return edeltaja;
+    }
+
+    @Override
+    public JFrame getKehys() {
+        return kehys;
     }
     
+    @Override
+    public Paneeli getPaneeli() {
+        return this.paneeli;
+    }
+    
+    @Override
+    public Ikkuna getSeuraaja() {
+        return seuraaja;
+    }       
+    
+    /**
+     * Lisää painikkeille tapahtumankuuntelijat.
+     * 
+     * @param logiikka Ohjelman toimintalogiikka.
+     */    
+    
+    @Override
+    public void lisaaKuuntelijat(Logiikka logiikka) {
+        int painikkeidenMaara = painikerivi.getComponentCount();
+        for (int tunnus = 0; tunnus < painikkeidenMaara; tunnus++) {
+            JButton painike = (JButton) painikerivi.getComponent(tunnus);
+            painike.addActionListener( new Kuuntelija(logiikka, painike, paneeli, edeltaja, seuraaja) );    
+        }
+    }
+        
     /**
      * Luo uuden painikerivin ja liittää sen ikkunaan.
      * 
@@ -184,6 +121,71 @@ public class Paaikkuna implements Ikkuna {
         painikerivi = new JPanel( layout );
         Container ikkunanSisalto = kehys.getContentPane();
         ikkunanSisalto.add(painikerivi, sijainti);
+    }
+        
+    /**
+     * Luo uuden paneelin ja liittää sen ikkunaan.
+     * 
+     * @param sijainti Layoutin tunnistama merkkijonovakio.
+     */
+    
+    private void lisaaPaneeli(String sijainti) {        
+        paneeli = new Paneeli();
+        Container ikkunanSisalto = kehys.getContentPane();
+        ikkunanSisalto.add(paneeli, sijainti);
+    }
+        
+    @Override
+    public void nayta() {
+        kehys.setVisible(true);
+    }
+    
+    @Override
+    public void paivitaSuodin(Suodin suodin) {
+        return;
+    }
+    
+    @Override
+    public void piilota() {
+        kehys.setVisible(false);
+    }
+    
+    @Override
+    public void setEdeltaja(Ikkuna edeltaja) {
+        this.edeltaja = edeltaja;
+    }  
+    
+    @Override
+    public void setKehys(JFrame kehys) {
+        this.kehys = kehys;
+    }
+
+    @Override
+    public void setPaneeli(Paneeli paneeli) {
+        this.paneeli = paneeli;
+    }        
+    
+    @Override
+    public void setSeuraaja(Ikkuna seuraaja) {
+        this.seuraaja = seuraaja;
+    }    
+    
+    /**
+     * Alustaa ikkunan halutun kokoiseksi, määrittää sen sijainnin ja
+     * lisää tarvittavat komponentit. 
+     */
+    
+    @Override
+    public void teeAlustukset() {
+        Dimension naytonKoko = Toolkit.getDefaultToolkit().getScreenSize();        
+        asettele(0, 0, naytonKoko.width / 2, (naytonKoko.height / 3) * 2, new BorderLayout() );
+        lisaaPaneeli(BorderLayout.CENTER);
+        lisaaPainikerivi( BorderLayout.SOUTH, new FlowLayout() );
+        String[] painikkeidenNimet = {"Lataa kuva", "Tummenna", "Vaalenna", "Harmaasävy",
+                                      "Suodatus", "Palauta", "Tallenna kuva", "Lopeta"};
+        for (String painikkeenNimi : painikkeidenNimet) {
+            painikerivi.add( new JButton(painikkeenNimi) );
+        }
     }
     
 }

@@ -8,8 +8,8 @@ import kuvankasittely.logic.*;
  * Tapahtumankuuntelija painikkeiden toiminnan toteuttamiseksi.
  * 
  * @author      kimpe
- * @version     6.0
- * @since       2013-10-11
+ * @version     6.1
+ * @since       2013-10-16
  */
 
 public class Kuuntelija implements ActionListener {
@@ -87,7 +87,10 @@ public class Kuuntelija implements ActionListener {
             case "Vaalenna":
                 logiikka.vaalennaKuvaa( logiikka.getKuvat().get("muokattu") );
                 break;
-            case "Suodata":
+            case "Harmaasävy":
+                logiikka.muunnaHarmaasavyksi( logiikka.getKuvat().get("muokattu") );
+                break;
+            case "Suodatus":
                 if (seuraaja != null) seuraaja.nayta();                
                 break;
             case "Palauta":
@@ -101,31 +104,9 @@ public class Kuuntelija implements ActionListener {
         }
         if (paneeli != null) logiikka.piirraKuva("muokattu", paneeli);   
     }
-
-    /** 
-     * Avaa tiedostoikkunan ja lataa kuvan käyttäjän valitsemasta tiedostosta.
-     */
-    
-    private void lataaKuva() {
-        JFileChooser tiedostovalitsin = new JFileChooser();
-        if ( tiedostovalitsin.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-            logiikka.lataaKuva( tiedostovalitsin.getSelectedFile() );
-        }        
-    }
     
     /** 
-     * Avaa tiedostoikkunan ja tallentaa kuvan käyttäjän nimeämään tiedostoon.
-     */
-    
-    private void tallennaKuva() {
-        JFileChooser tiedostovalitsin = new JFileChooser();
-        if ( tiedostovalitsin.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
-            logiikka.tallennaKuva( tiedostovalitsin.getSelectedFile() );
-        }        
-    }
-    
-    /** 
-     * Käsittee suodatusikkunan painikkeisiin liittyvät tapahtumat.
+     * Käsittelee suodatusikkunan painikkeisiin liittyvät tapahtumat.
      */
     
     private void kasitteleSuodatusikkunanPainike() {
@@ -157,6 +138,28 @@ public class Kuuntelija implements ActionListener {
             case "Sulje":
                 edeltaja.getSeuraaja().piilota();
         }
+    }
+    
+    /** 
+     * Avaa tiedostoikkunan ja lataa kuvan käyttäjän valitsemasta tiedostosta.
+     */
+    
+    private void lataaKuva() {
+        JFileChooser tiedostovalitsin = new JFileChooser();
+        if ( tiedostovalitsin.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+            logiikka.lataaKuva( tiedostovalitsin.getSelectedFile() );
+        }        
+    }
+    
+    /** 
+     * Avaa tiedostoikkunan ja tallentaa kuvan käyttäjän nimeämään tiedostoon.
+     */
+    
+    private void tallennaKuva() {
+        JFileChooser tiedostovalitsin = new JFileChooser();
+        if ( tiedostovalitsin.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+            logiikka.tallennaKuva( tiedostovalitsin.getSelectedFile() );
+        }        
     }
     
 }

@@ -9,8 +9,8 @@ import kuvankasittely.domain.*;
  * Paneeli kuvien piirtämistä varten.
  * 
  * @author      kimpe
- * @version     6.0
- * @since       2013-10-11
+ * @version     6.1
+ * @since       2013-10-16
  */
 
 public class Paneeli extends JPanel {
@@ -29,6 +29,16 @@ public class Paneeli extends JPanel {
         super.setBackground(Color.WHITE);
     }
 
+    /**
+     * Palauttaa piirrettävän kuvan.
+     * 
+     * @return Paneeliin liittyvä kuva.
+     */    
+    
+    public BufferedImage getKuva() {
+        return puskuroituKuva;
+    }
+    
     @Override
     protected void paintComponent(Graphics graphics) { 
          super.paintComponent(graphics);
@@ -44,15 +54,5 @@ public class Paneeli extends JPanel {
     public void setKuva(Kuva kuva) {
         this.puskuroituKuva = kuva.getPuskuroituKuva();
     }
-    
-    /**
-     * Palauttaa piirrettävän kuvan.
-     * 
-     * @return Paneeliin liittyvä kuva.
-     */    
-    
-    public BufferedImage getKuva() {
-        return puskuroituKuva;
-    }
-    
+        
 }

@@ -8,8 +8,8 @@ package kuvankasittely.domain;
  * negatiivisia alkioita sisältävien suodintyyppien toteuttamiseksi.
  * 
  * @author      kimpe
- * @version     6.0
- * @since       2013-10-11
+ * @version     6.1
+ * @since       2013-10-16
  */
 
 public class Matriisi {
@@ -61,37 +61,7 @@ public class Matriisi {
             }
         }
     }
-    
-    /** 
-     * Asettaa arvon matriisin alkiolle.
-     * 
-     * @param rivi Matriisin rivi, jolla käsiteltävä alkio sijaitsee.
-     * @param sarake Matriisin sarake, jolla käsiteltävä alkio sijaitsee.
-     * @param arvo Alkiolle asetettava arvo, jonka tulee olla kaksoistarkkuuden liukuluku.
-     */
-    
-    public void setAlkio(int rivi, int sarake, double arvo) {
-        try {
-            alkiot[rivi][sarake] = arvo;
-        } catch (IndexOutOfBoundsException poikkeus) {
-            return;
-        }
-    }
-    
-    /**
-     * Asettaa arvon matriisin kaikille alkioille.
-     * 
-     * @param arvo Alkioille asetettava arvo, jonka tulee olla kaksoistarkkuuden liukuluku.
-     */
-    
-    public void setAlkiot(double arvo) {
-        for (int rivi = 0; rivi < rivienMaara; rivi++) {
-            for (int sarake = 0; sarake < sarakkeidenMaara; sarake++) {
-                setAlkio(rivi, sarake, arvo);
-            }
-        }
-    }
-    
+       
     /**
      * Palauttaa matriisin alkion arvon.
      * 
@@ -138,44 +108,7 @@ public class Matriisi {
     public int getSarakkeidenMaara() {
         return sarakkeidenMaara;
     }
-    
-    /**
-     * Kertoo matriisin alkiot vakiolla.
-     * <p>
-     * Jos alkuperäinen matriisi A = (a_ij) ja vakio on c, niin kertomisen
-     * yhteydessä kukin a_ij saa arvon c * a_ij.
-     * 
-     * @param vakio Luku, jolla alkiot kerrotaan.
-     */
-    
-    public void kerro(double vakio) {
-        for (int rivi = 0; rivi < this.getRivienMaara(); rivi++) {
-             for (int sarake = 0; sarake < this.getSarakkeidenMaara(); sarake++) {
-                setAlkio(rivi, sarake, vakio * getAlkio(rivi, sarake) );
-             }
-        }
-    }
-    
-    /**
-     * Lisää matriisin alkioihin toisen samankokoisen matriisin alkiot.
-     * <p>
-     * Jos alkuperäinen matriisi A = (a_ij) ja lisättävä matriisi B = (b_ij),
-     * niin lisäyksen yhteydessä kukin a_ij saa arvon a_ij + b_ij.
-     * 
-     * @param matriisi Lisättävä matriisi.
-     */
-    
-    public void lisaa(Matriisi matriisi) {
-        if ( this.getRivienMaara() == matriisi.getRivienMaara() &&
-             this.getSarakkeidenMaara() == matriisi.getSarakkeidenMaara() ) {
-            for (int rivi = 0; rivi < this.getRivienMaara(); rivi++) {
-                for (int sarake = 0; sarake < this.getSarakkeidenMaara(); sarake++) {
-                    this.setAlkio(rivi, sarake, this.getAlkio(rivi, sarake) + matriisi.getAlkio(rivi, sarake) );
-                }    
-            }
-        }
-    }        
-    
+            
     /**
      * Kääntää matriisin pystyakselinsa ympäri.
      * <p>
@@ -211,6 +144,23 @@ public class Matriisi {
                 setAlkio(rivi, sarake, getAlkio(rivienMaara - 1 - rivi, sarake) );
                 setAlkio(rivienMaara - 1 - rivi, sarake, kopio);
             }
+        }
+    }
+    
+    /**
+     * Kertoo matriisin alkiot vakiolla.
+     * <p>
+     * Jos alkuperäinen matriisi A = (a_ij) ja vakio on c, niin kertomisen
+     * yhteydessä kukin a_ij saa arvon c * a_ij.
+     * 
+     * @param vakio Luku, jolla alkiot kerrotaan.
+     */
+    
+    public void kerro(double vakio) {
+        for (int rivi = 0; rivi < this.getRivienMaara(); rivi++) {
+             for (int sarake = 0; sarake < this.getSarakkeidenMaara(); sarake++) {
+                setAlkio(rivi, sarake, vakio * getAlkio(rivi, sarake) );
+             }
         }
     }
     
@@ -276,6 +226,56 @@ public class Matriisi {
             }                    
         }
         return summa;
+    }
+    
+    /**
+     * Lisää matriisin alkioihin toisen samankokoisen matriisin alkiot.
+     * <p>
+     * Jos alkuperäinen matriisi A = (a_ij) ja lisättävä matriisi B = (b_ij),
+     * niin lisäyksen yhteydessä kukin a_ij saa arvon a_ij + b_ij.
+     * 
+     * @param matriisi Lisättävä matriisi.
+     */
+    
+    public void lisaa(Matriisi matriisi) {
+        if ( this.getRivienMaara() == matriisi.getRivienMaara() &&
+             this.getSarakkeidenMaara() == matriisi.getSarakkeidenMaara() ) {
+            for (int rivi = 0; rivi < this.getRivienMaara(); rivi++) {
+                for (int sarake = 0; sarake < this.getSarakkeidenMaara(); sarake++) {
+                    this.setAlkio(rivi, sarake, this.getAlkio(rivi, sarake) + matriisi.getAlkio(rivi, sarake) );
+                }    
+            }
+        }
+    }      
+    
+    /** 
+     * Asettaa arvon matriisin alkiolle.
+     * 
+     * @param rivi Matriisin rivi, jolla käsiteltävä alkio sijaitsee.
+     * @param sarake Matriisin sarake, jolla käsiteltävä alkio sijaitsee.
+     * @param arvo Alkiolle asetettava arvo, jonka tulee olla kaksoistarkkuuden liukuluku.
+     */
+    
+    public void setAlkio(int rivi, int sarake, double arvo) {
+        try {
+            alkiot[rivi][sarake] = arvo;
+        } catch (IndexOutOfBoundsException poikkeus) {
+            return;
+        }
+    }
+    
+    /**
+     * Asettaa arvon matriisin kaikille alkioille.
+     * 
+     * @param arvo Alkioille asetettava arvo, jonka tulee olla kaksoistarkkuuden liukuluku.
+     */
+    
+    public void setAlkiot(double arvo) {
+        for (int rivi = 0; rivi < rivienMaara; rivi++) {
+            for (int sarake = 0; sarake < sarakkeidenMaara; sarake++) {
+                setAlkio(rivi, sarake, arvo);
+            }
+        }
     }
     
 }

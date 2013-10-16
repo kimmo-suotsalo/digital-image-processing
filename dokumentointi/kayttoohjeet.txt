@@ -1,0 +1,92 @@
+------------
+KÄYTTÖOHJEET
+------------
+
+1 ALOITTAMINEN
+
+  Käynnistä ohjelma. Pääikkuna avautuu automaattisesti.
+
+2 PÄÄIKKUNA
+
+  Käyttääksesi ohjelman toimintoja on sinun ensin ladattava kuva tiedostosta.
+
+  2.1 KUVAN LATAAMINEN
+
+    Napsauta "Lataa kuva"-painiketta ja valitse avautuvasta tiedostoikkunasta
+    haluamasi kuvatiedosto. Onnistuneen latauksen jälkeen näet kuvan pääikku-
+    nassa.
+
+  2.2 KUVAN TUMMENTAMINEN
+
+    Napsauta "Tummenna"-painiketta. Kuvan kirkkaus vähenee 10 %.
+
+  2.3 KUVAN VAALENTAMINEN
+
+    Napsauta "Vaalenna"-painiketta. Kuvan kirkkaus kasvaa 10 %.
+
+  2.4 VÄRIKUVAN MUUNTAMINEN HARMAASÄVYKUVAKSI
+
+    Napsauta "Harmaasävy"-painiketta. Kuva muuntuu harmaasävykuvaksi.
+
+  2.5 KUVAN SUODATUS
+
+    Napsauta "Suodatus"-painiketta. Suodatusikkuna aukeaa.
+
+  2.6 ALKUPERÄISEN KUVAN PALAUTTAMINEN
+
+    Napsauta "Palauta"-painiketta. Muokattu kuva korvautuu kuvalla, joka
+    viimeksi ladattiin tiedostosta.
+
+  2.7 MUOKATUN KUVAN TALLENTAMINEN
+
+    Napsauta "Tallenna"-painiketta ja syötä avautuvaan tiedostoikkunaan kirjoi-
+    tustiedoston nimi. Kuva tallennetaan tiedostoon jpg-muodossa.
+
+  2.8 LOPETTAMINEN
+
+    Napsauta "Lopeta"-painiketta. Ikkunat suljetaan ja ohjelman suoritus
+    päättyy.
+
+3 SUODATUSIKKUNA
+
+    Valitaksesi käytettävän suotimen napsauta jotakin viidestä ylimmästä painik-
+    keesta, jotka sijaitsevat ikkunan vasemmassa reunassa. Suodinmatriisia esit-
+    tävä 3x3-kokoinen taulukko päivittyy valintasi mukaiseksi.
+
+  3.1 SUOTIMEN NOLLAUS
+
+    Napsauta "Nollaa"-painiketta. Suodinmatriisin alkiot muutetaan nolliksi.
+    Nollasuotimella konvolointi muuttaa kuvan kaikki pikselit mustiksi.
+
+  3.2 DELTAFUNKTIO
+
+    Napsauta "Deltafunktio"-painiketta. Suodinmatriisin alkiot muutetaan nol-
+    liksi lukuunottamatta keskimmäistä, joka saa arvon 1.0. Deltafunktiolla
+    konvolointi ei muuta kuvaa millään lailla.
+
+  3.3 ALIPÄÄSTÖSUODIN
+
+    Napsauta "Alipäästö"-painiketta. Suodinmatriisin alkiot saavat arvon, joka
+    on 1.0 jaettuna alkioiden lukumäärällä. Tämä suodin silottaa kuvaa poista-
+    malla siitä korkeataajuisia komponentteja.
+
+  3.4 YLIPÄÄSTÖSUODIN
+
+    Napsauta "Ylipäästö"-painiketta. Suodinmatriisin alkiot saadaan vähentämällä
+    deltafunktion alkioiden arvoista reunanetsintäsuotimen alkioiden arvot. Tämä
+    suodin terävöittää kuvaa poistamalla siitä matalataajuisia komponentteja.
+    
+  3.5 REUNANETSINTÄSUODIN
+
+    Napsauta "Reunanetsintä"-painiketta. Saadun suodinmatriisin alkioiden arvot
+    perustuvat diskreettiin Laplace-operaattoriin. Tämä suodin tuo esiin kuvan
+    kohteiden reunat.
+
+  3.6 KUVAN KONVOLOINTI SUOTIMELLA
+
+    Napsauta "Suodata"-painiketta. Pääikkunassa näkyvä kuva konvoloidaan valit-
+    semallasi suotimella.
+
+  3.7 SUODATUSIKKUNAN SULKEMINEN
+
+    Napsauta "Sulje"-painiketta. Suodatusikkuna suljetaan.

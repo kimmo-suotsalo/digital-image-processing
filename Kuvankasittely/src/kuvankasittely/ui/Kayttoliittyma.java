@@ -6,8 +6,8 @@ import kuvankasittely.logic.*;
  * Ohjelman graafinen käyttöliittymä.
  * 
  * @author      kimpe
- * @version     6.0
- * @since       2013-10-11
+ * @version     6.1
+ * @since       2013-10-16
  */
 
 public class Kayttoliittyma implements Runnable {
@@ -25,13 +25,13 @@ public class Kayttoliittyma implements Runnable {
     private Ikkuna suodatusikkuna;
 
     /**
-     * Ohjelman toimitalogiikka.
+     * Ohjelman toimintalogiikka.
      */    
     
     private Logiikka logiikka;
     
     /**
-     * Luo uuden käyttöliittymän, johon kuuluu pääikkuna ja suodutusikkuna.
+     * Luo uuden käyttöliittymän, johon kuuluu pääikkuna ja suodatusikkuna.
      * 
      * @param logiikka Ohjelman toimintalogiikka.
      */    

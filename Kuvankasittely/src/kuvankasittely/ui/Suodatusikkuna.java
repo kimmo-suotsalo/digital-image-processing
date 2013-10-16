@@ -10,8 +10,8 @@ import kuvankasittely.logic.*;
  * Kuvan suodatuksessa käytettävä ikkuna.
  * 
  * @author      kimpe
- * @version     6.0
- * @since       2013-10-11
+ * @version     6.1
+ * @since       2013-10-16
  */
 
 public class Suodatusikkuna implements Ikkuna {
@@ -64,86 +64,6 @@ public class Suodatusikkuna implements Ikkuna {
         kehys.pack();
     }
        
-    /** Lisää painikkeille tapahtumankuuntelijat.
-     * 
-     * @param logiikka Ohjelman toimintalogiikka.
-     */    
-    
-    @Override
-    public void lisaaKuuntelijat(Logiikka logiikka) {
-        int painikkeidenMaara = painikerivi.getComponentCount();
-        for (int tunnus = 1; tunnus < painikkeidenMaara; tunnus++) {
-            JButton painike = (JButton) painikerivi.getComponent(tunnus);
-            painike.addActionListener( new Kuuntelija(logiikka, painike, paneeli, edeltaja, seuraaja) );    
-        }
-    }
-
-    @Override
-    public void setKehys(JFrame kehys) {
-        this.kehys = kehys;
-    }
-
-    @Override
-    public void setEdeltaja(Ikkuna edeltaja) {
-        this.edeltaja = edeltaja;
-    }    
-    
-    @Override
-    public void setSeuraaja(Ikkuna seuraaja) {
-        this.seuraaja = seuraaja;
-    }    
-    
-    @Override
-    public void setPaneeli(Paneeli paneeli) {
-        this.paneeli = paneeli;
-    }
-    
-    @Override
-    public JFrame getKehys() {
-        return kehys;
-    }
-
-    @Override
-    public Ikkuna getEdeltaja() {
-        return edeltaja;
-    }
-
-    @Override
-    public Ikkuna getSeuraaja() {
-        return seuraaja;
-    }       
-
-    @Override    
-    public Paneeli getPaneeli() {
-        return paneeli;
-    }
-
-    @Override
-    public void nayta() {
-        kehys.setVisible(true);
-    }
-
-    @Override
-    public void piilota() {
-        kehys.setVisible(false);
-    }
-    
-    /** Alustaa ikkunan halutun kokoiseksi, määrittää sen sijainnin ja
-     * lisää tarvittavat komponentit. 
-     */
-    
-    @Override
-    public void teeAlustukset() {
-        asettele(1200, 100, 400, 300, new BorderLayout() );        
-        lisaaPainikerivi( BorderLayout.WEST, new GridLayout(8,1) );
-        lisaaTaulukko( BorderLayout.CENTER, new Suodin("Deltafunktio", 1) );        
-        painikerivi.add( new JLabel("  Suotimen valinta") );
-        String[] painikkeidenNimet = {"Nollaa", "Deltafunktio", "Alipäästö", "Ylipäästö", "Reunanetsintä", "Suodata", "Sulje"};
-        for (String painikkeenNimi : painikkeidenNimet) {
-            painikerivi.add( new JButton(painikkeenNimi) );
-        }
-    }
-    
     /** Sijoittaa ikkunan annettuun sijaintiin annetun kokoisena, asettaa
      * layoutin ja määrittää ikkunan sulkemiseen liittyvän toiminnon.
      * 
@@ -161,16 +81,38 @@ public class Suodatusikkuna implements Ikkuna {
         kehys.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     }
     
-    /**
-     * Luo uuden paneelin ja liittää sen ikkunaan.
-     * 
-     * @param sijainti Layoutin tunnistama merkkijonovakio.
-     */
+    @Override
+    public Ikkuna getEdeltaja() {
+        return edeltaja;
+    } 
     
-    private void lisaaPaneeli(String sijainti) {        
-        paneeli = new Paneeli();
-        Container ikkunanSisalto = kehys.getContentPane();
-        ikkunanSisalto.add(paneeli, sijainti);
+    @Override
+    public JFrame getKehys() {
+        return kehys;
+    }
+
+    @Override    
+    public Paneeli getPaneeli() {
+        return paneeli;
+    }
+
+    @Override
+    public Ikkuna getSeuraaja() {
+        return seuraaja;
+    }       
+    
+    /** Lisää painikkeille tapahtumankuuntelijat.
+     * 
+     * @param logiikka Ohjelman toimintalogiikka.
+     */    
+    
+    @Override
+    public void lisaaKuuntelijat(Logiikka logiikka) {
+        int painikkeidenMaara = painikerivi.getComponentCount();
+        for (int tunnus = 0; tunnus < painikkeidenMaara; tunnus++) {
+            JButton painike = (JButton) painikerivi.getComponent(tunnus);
+            painike.addActionListener( new Kuuntelija(logiikka, painike, paneeli, edeltaja, seuraaja) );    
+        }
     }
     
     /**
@@ -184,15 +126,19 @@ public class Suodatusikkuna implements Ikkuna {
         painikerivi = new JPanel( layout );
         kehys.getContentPane().add(painikerivi, sijainti);
     }
-
-    @Override
-    public void paivitaSuodin(Suodin suodin) {
-        kehys.getContentPane().remove(kehys.getComponentCount());
-        lisaaTaulukko(BorderLayout.CENTER, suodin);
-        kehys.pack();
-        kehys.repaint();
-    }
     
+    /**
+     * Luo uuden paneelin ja liittää sen ikkunaan.
+     * 
+     * @param sijainti Layoutin tunnistama merkkijonovakio.
+     */
+    
+    private void lisaaPaneeli(String sijainti) {        
+        paneeli = new Paneeli();
+        Container ikkunanSisalto = kehys.getContentPane();
+        ikkunanSisalto.add(paneeli, sijainti);
+    }
+        
     /**
      * Luo suodinta esittävän painiketaulukon ja liittää sen ikkunaan.
      * 
@@ -211,6 +157,59 @@ public class Suodatusikkuna implements Ikkuna {
             }
         }
         kehys.getContentPane().add(taulukko, sijainti);
+    }
+    
+    @Override
+    public void nayta() {
+        kehys.setVisible(true);
+    }
+    
+    @Override
+    public void paivitaSuodin(Suodin suodin) {
+        kehys.getContentPane().remove(kehys.getComponentCount());
+        lisaaTaulukko(BorderLayout.CENTER, suodin);
+        kehys.pack();
+        kehys.repaint();
+    }
+    
+    @Override
+    public void piilota() {
+        kehys.setVisible(false);
+    }
+    
+    @Override
+    public void setEdeltaja(Ikkuna edeltaja) {
+        this.edeltaja = edeltaja;
+    } 
+    
+    @Override
+    public void setKehys(JFrame kehys) {
+        this.kehys = kehys;
+    }
+        
+    @Override
+    public void setPaneeli(Paneeli paneeli) {
+        this.paneeli = paneeli;
+    }
+    
+    @Override
+    public void setSeuraaja(Ikkuna seuraaja) {
+        this.seuraaja = seuraaja;
+    }    
+    
+    /** Alustaa ikkunan halutun kokoiseksi, määrittää sen sijainnin ja
+     * lisää tarvittavat komponentit. 
+     */
+    
+    @Override
+    public void teeAlustukset() {
+        asettele(100, 100, 400, 300, new BorderLayout() );
+        lisaaPainikerivi( BorderLayout.WEST, new GridLayout(7, 1) );
+        lisaaTaulukko( BorderLayout.CENTER, new Suodin("Deltafunktio", 1) );        
+        String[] painikkeidenNimet = {"Nollaa", "Deltafunktio", "Alipäästö", "Ylipäästö", "Reunanetsintä", "Suodata", "Sulje"};
+        for (String painikkeenNimi : painikkeidenNimet) {
+            painikerivi.add( new JButton(painikkeenNimi) );
+        }
     }
     
 }
